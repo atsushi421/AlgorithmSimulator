@@ -2,6 +2,7 @@ import time
 import math
 from q_learning import ql
 from dag import read_dag
+from task_allocation import culc_makespan
 
 
 
@@ -90,3 +91,5 @@ for i in q_sa:
 
 print('s_list = ', end = '')
 print(s_list)
+
+culc_makespan(5, 16, s_list)

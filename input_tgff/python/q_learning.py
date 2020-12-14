@@ -98,7 +98,7 @@ def ql(num_of_node, node, edge, pred, succ, exit, ranku, en, a, g, n):
 
 			# 行動価値関数が更新されなかったら、finish_flagに1を足す
 			print(abs(tmp - q_sa[before_state][selected_node]))
-			if(abs(tmp - q_sa[before_state][selected_node]) < 0.1):
+			if(abs(tmp - q_sa[before_state][selected_node]) <= 1):
 				finish_flag = finish_flag + 1
 
 
