@@ -3,10 +3,11 @@ import math
 
 
 
-#teはエントリーノード。aは学習率。gは割引率。nは反復回数。　＜使用例＞q_sa,s_list = ql(NUM_OF_NODE, node, edge, pred, succ, exit, ranku, 0, 1.0, 0.8, 1000000)
+#enはエントリーノード。aは学習率。gは割引率。nは反復回数。　＜使用例＞q_sa,s_list = ql(NUM_OF_NODE, node, edge, pred, succ, exit, ranku, 0, 1.0, 0.8, 1000000)
 def ql(num_of_node, node, edge, pred, succ, exit, ranku, en, a, g, n):
 
 	count = 0  #何エピソード学習したか
+	true_flag = 0
 
 
 	# 行動価値関数の初期化
@@ -79,7 +80,7 @@ def ql(num_of_node, node, edge, pred, succ, exit, ranku, en, a, g, n):
 			max_q_value = 0  #現在の状態における行動価値の最大値を格納
 			max_value_action = 0  #行動価値が最大のノード
 
-			for wait_n in wait_nodes:
+			for wait_n in range(num_of_node):
 				if(q_sa[current_state][wait_n] >= max_q_value):
 					max_q_value = q_sa[current_state][wait_n]  #行動価値の最大値を更新
 					max_value_action = wait_n
@@ -90,17 +91,15 @@ def ql(num_of_node, node, edge, pred, succ, exit, ranku, en, a, g, n):
 			# ↓行動価値関数の更新----------------------------------------------------
 			tmp = q_sa[before_state][selected_node]  #更新前の値を保持
 			q_sa[before_state][selected_node] = q_sa[before_state][selected_node] + a * (rw + g * q_sa[current_state][max_value_action] - q_sa[before_state][selected_node])
-			# ↑--------------------------------------------------------------------
+   			# ↑--------------------------------------------------------------------
 
 
 			# ~~~~~~~~~~~~~~~~~1時間ステップ終了~~~~~~~~~~~~~~~~~~~~
 
 
 			# 行動価値関数が更新されなかったら、finish_flagに1を足す
-			print(abs(tmp - q_sa[before_state][selected_node]))
-			if(abs(tmp - q_sa[before_state][selected_node]) <= 1):
+			if(abs(rw + g * q_sa[current_state][max_value_action] - tmp) <= 0.00000001):
 				finish_flag = finish_flag + 1
-
 
 		# ↑-------------------------------------------------------------------------------------------------------------------------------
 
@@ -115,7 +114,13 @@ def ql(num_of_node, node, edge, pred, succ, exit, ranku, en, a, g, n):
 
 		#学習終了の判定
 		if(finish_flag == (num_of_node - 1)):
-			break
+			true_flag += 1
+		
+			if (true_flag == 100):
+				break
+
+		else:
+			true_flag = 0
 
 
 	# ↑-----------------------------------------------------------------------------------------------------------------------------------------
