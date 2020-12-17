@@ -20,27 +20,27 @@ def can_same(num_t, result, target):
     #↑---------------------------------------------------------------------------------------------
     
 #～s秒、矛盾が無いように時間を進める～
-def advance_time(s, target, executed_tasks):
+def advance_time(num_of_cc, num_of_core, current_time, target, result, executed_tasks):
     
-    for CC in target:
-        for core in CC:
-            if(core[0] != -1):  #コアが動作中
-                core[1] -= s  #s秒分、処理を進める
-                if(core[1] <= 0):  #残りの実行時間が0以下になったら
-                    executed_tasks.append(core[0])  #そのタスクを実行済みにする
-                    core[0] = -1  #コアをアイドル状態にする
-                    core[1] = 0  #初期状態に戻す
+    for i in range(num_of_cc):
+        for j in range(num_of_core):
+                if(target[i][j][0] != -1 and current_time >= result[target[i][j][0]][2]):  #そのコアにタスクが割り当てられていて、開始時刻になったら
+                    target[i][j][1] -= 1  #1秒分処理
+                    if(target[i][j][1] == 0):
+                        executed_tasks.append(target[i][j][0])  #そのタスクを実行済みにする
+                        target[i][j][0] = -1  #コアをアイドル状態にする
+                        target[i][j][1] = 0  #初期状態に戻す
 
 #～コアにタスクを割り当てる。
 # sが何番目のクラスタか、kが何番目のコアか,～
-def allocate_core(node, current_time, s, k, num_t, target, result, sl):
+def allocate_core(node, will_allocate_time, s, k, num_t, target, result, sl):
     target[s][k][0] = num_t
     target[s][k][1] = node[num_t]
     
     result[num_t][0] = s
     result[num_t][1] = k
-    result[num_t][2] = current_time
-    result[num_t][3] = current_time + node[num_t]  #実行終了時間は、「割り当てられた時刻+処理時間」
+    result[num_t][2] = will_allocate_time
+    result[num_t][3] = will_allocate_time + node[num_t]  #実行終了時間は、「割り当てられた時刻+処理時間」
     
     if(len(sl) != 0):
         del sl[0]
@@ -78,10 +78,7 @@ def culc_makespan(node, edge, pred, succ, s, k, ratio, sl):
     s = 0  #現在の時刻
     
     while(len(sl) != 0):  #スケジューリングリストが空になるまで繰り返す
-        
-        for i in target:
-            print(i)
-        
+
         head = sl[0]  #スケジューリングリストの先頭のタスク番号
 
         if(legal(executed_tasks, pred, head)):  #スケジューリングリストの先頭がlegalなら
@@ -99,14 +96,11 @@ def culc_makespan(node, edge, pred, succ, s, k, ratio, sl):
             allocate_cc = can_same(max_time_pred, result, target)
             
             if(allocate_cc != -1):  #同じクラスタ内に割り当て可能
-                #通信時間分、時間を進める
-                s += edge[max_time_pred][head]  
-                advance_time(edge[max_time_pred][head], target, executed_tasks)
-                
+           
                 #～コアにタスクを割り当てる～
                 for i in range(NUM_OF_CORES):
                     if(target[allocate_cc][i][0] == -1):  #アイドル状態のコアを見つけたら
-                        allocate_core(node, s, allocate_cc, i, head, target, result, sl)  #タスクを割り当てる
+                        allocate_core(node, s + edge[max_time_pred][head], allocate_cc, i, head, target, result, sl)  #タスクを割り当てる
                         break
             
             else:  #同じクラスタ内に割り当てできない場合
@@ -125,20 +119,13 @@ def culc_makespan(node, edge, pred, succ, s, k, ratio, sl):
                 
                 #クラスタ外の通信時間と、earliest_idle_time + クラスタ内の通信時間を比較して、早い方を選択する
                 if((earliest_idle_time + edge[max_time_pred][head]) < (edge[max_time_pred][head] * SAME_DIFF_RATIO)):  #待つ方が早いなら
-                    #アイドル状態になるまで、時間を進める
-                    s += earliest_idle_time
-                    advance_time(earliest_idle_time, target, executed_tasks)
-                
                     #～コアにタスクを割り当てる～
                     for i in range(NUM_OF_CORES):
                         if(target[max_time_pred_CC][i][0] == -1):  #アイドル状態のコアを見つけたら
-                            allocate_core(node, s, max_time_pred_CC, i, head, target, result, sl)  #タスクを割り当てる
+                            allocate_core(node, s + earliest_idle_time + edge[max_time_pred][head], max_time_pred_CC, i, head, target, result, sl)  #タスクを割り当てる
                             break
                             
                 else:  #クラスタ外に割り当てた方が早いなら
-                    #通信時間分、時間を進める
-                    s += edge[max_time_pred][head] * SAME_DIFF_RATIO
-                    advance_time(edge[max_time_pred][head] * SAME_DIFF_RATIO, target, executed_tasks)
                 
                     #～コアにタスクを割り当てる～
                     allocate_flag = 0  #割り当てが終わったら1
@@ -146,7 +133,7 @@ def culc_makespan(node, edge, pred, succ, s, k, ratio, sl):
                     for i in range(NUM_OF_CCs):
                         for j in range(NUM_OF_CORES):
                             if(target[i][j][0] == -1):
-                                allocate_core(node, s, i, j, head, target, result, sl)
+                                allocate_core(node, s + edge[max_time_pred][head] * SAME_DIFF_RATIO, i, j, head, target, result, sl)
                                 allocate_flag = 1
                                 break
                             
@@ -154,9 +141,16 @@ def culc_makespan(node, edge, pred, succ, s, k, ratio, sl):
                             break
         
 
-        #スケジューリングリストの先頭が実行可能になるまで待機
+        #↓-----～この時間でまだ割り当てられるか確認～---------------------------------------
+        if(len(sl) != 0):
+            head = sl[0]  #スケジューリングリストの先頭のタスク番号
+            if(legal(executed_tasks, pred, head)):  #スケジューリングリストの先頭がlegalなら
+                continue
+        #↑--------------------------------------------------------------------------------
+            
+        #スケジューリングリストの先頭が実行可能になるまで待つ
+        advance_time(NUM_OF_CCs, NUM_OF_CORES, s, target, result, executed_tasks)
         s += 1
-        advance_time(1, target, executed_tasks)
     
     #↑--------------------------------------------------------------------------------------------------------------------------------------------------------------------
     
