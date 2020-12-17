@@ -82,14 +82,16 @@ execution_time = time.perf_counter() - start_time  #時間計測終了
 print('計算にかかった時間 = %f' % execution_time)
 #----------------------------------------------------------------
 
+"""
 print('q_sa = ', end = '')
 for i in q_sa:
 	for j in i:
 		print(math.floor(j), end='')
 		print(', ', end='')
 	print('\n')
+"""
 
 print('s_list = ', end = '')
 print(s_list)
 
-culc_makespan(5, 16, s_list)
+culc_makespan(NUM_OF_NODE, node, edge, pred, succ, 3, 4, s_list)
