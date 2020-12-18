@@ -83,15 +83,50 @@ def culc_makespan(node, edge, pred, succ, s, k, ratio, sl):
 
         if(legal(executed_tasks, pred, head)):  #スケジューリングリストの先頭がlegalなら
             
-            #↓-----～前任タスクの中で、「実行終了時間+通信時間」が最も遅いタスクを見つける。～------
-            max_time_pred = 0  #「実行終了時間+通信時間(クラスタ内で計算)」が最も遅いタスク
-            max_time = 0  #「実行終了時間+通信時間(クラスタ内で計算)」の最大値
+            #↓-----～前任タスクの中で、「実行終了時間+通信時間」が最も遅いタスクを見つける。～-----------------------------------------------------------
             
-            for pred_head in pred[head]:
-                if((result[pred_head][3] + edge[pred_head][head]) >= max_time):
-                    max_time_pred = pred_head
-                    max_time = result[pred_head][3] + edge[pred_head][head]
-            #↑----------------------------------------------------------------------------------
+            max_time_pred = 0  #「実行終了時間+通信時間」が最も遅いタスク
+            max_time = 0  #「実行終了時間+通信時間」の最大値
+            
+            for pred_head in pred[head]:  #前任タスクをすべて探索
+                same_result = can_same(pred_head, result, target)  #その前任タスクが割り当てられているクラスタが空いているか調べる
+                
+                if(same_result != -1):
+                    #↓-----～その前任タスクが割り当てられているクラスタが空いている　→　クラスタ内の通信時間で計算～---------
+                    if((result[pred_head][3] + edge[pred_head][head]) >= max_time):
+                        max_time_pred = pred_head
+                        max_time = result[pred_head][3] + edge[pred_head][head]
+                    #↑-------------------------------------------------------------------------------------------------
+                
+                else:
+                    #↓-----～その前任タスクが割り当てられているクラスタが空いていない～----------------------------------------------------------------------------
+                    
+                    #↓-----～その前任タスクが割り当てられているクラスタの中のコアで、最速でアイドル状態になるコアを見つけて、それまでの時間を調べる～----
+                    earliest_idle_core = 0  #最速でアイドル状態になるコア
+                    earliest_idle_time = 0  #最速でアイドル状態になるコアがアイドル状態になるまでの時間
+                
+                    for i in range(NUM_OF_CORES):  #max_time_predが割り当てられたクラスタを探索
+                        if(target[max_time_pred_CC][i][1] >= earliest_idle_time):
+                            earliest_idle_core = i
+                            earliest_idle_time = target[max_time_pred_CC][i][1]
+                    #↑-----------------------------------------------------------------------------------------------------------
+                    
+                    if((earliest_idle_time + edge[pred_head][head]) < (edge[pred_head][head] * SAME_DIFF_RATIO)):
+                        #↓------～待って、同じクラスタ内に割り当てた方が早い　→　クラスタ内の通信時間で計算～------------------------------------
+                        if((result[pred_head][3] + edge[pred_head][head]) >= max_time):
+                            max_time_pred = pred_head
+                            max_time = result[pred_head][3] + edge[pred_head][head]
+                        #↑------------------------------------------------------------------------------------------------------------------
+                    
+                    else:
+                        #↓-----～クラスタ外に割り当てた方が早い　→　クラスタ外の通信時間で計算～---------------------------
+                        if((result[pred_head][3] + edge[pred_head][head] * SAME_DIFF_RATIO) >= max_time):
+                            max_time_pred = pred_head
+                            max_time = result[pred_head][3] + edge[pred_head][head] * SAME_DIFF_RATIO
+                        #↑---------------------------------------------------------------------------------------------
+                    #↑-----------------------------------------------------------------------------------------------------------------------------------------
+                
+            #↑-----------------------------------------------------------------------------------------------------------------------------------------------------------
             
             allocate_cc = can_same(max_time_pred, result, target)
             
