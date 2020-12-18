@@ -135,6 +135,15 @@ def culc_makespan(node, edge, pred, succ, s, k, ratio, sl):
                 #～コアにタスクを割り当てる～
                 for i in range(NUM_OF_CORES):
                     if(target[allocate_cc][i][0] == -1):  #アイドル状態のコアを見つけたら
+                        
+                        #↓～割り当てる前に、前任タスクからの「実行終了時間+通信時間」が最も遅い時刻を調べる～---
+                        max_time2 = 0  #前任タスクからの「実行終了時間+通信時間」が最も遅い時刻
+                        
+                        for pred_head in pred[head]:
+                        
+                        #↑---------------------------------------------------------------------------------
+                            
+                        
                         allocate_core(node, s + edge[max_time_pred][head], allocate_cc, i, head, target, result, sl)  #タスクを割り当てる
                         break
             

@@ -94,7 +94,7 @@ for i in q_sa:
 print('s_list = ', end = '')
 print(s_list)
 
-result = culc_makespan(node, edge, pred, succ, 1, 3, 3, s_list)
+result = culc_makespan(node, edge, pred, succ, 2, 2, 3, s_list)
 
 for i in result:
     print(i)
