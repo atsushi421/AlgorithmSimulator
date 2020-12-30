@@ -47,7 +47,7 @@ def culc_makespan(node, edge, pred, succ, s, k, ratio, sl):
     succ = succ
     NUM_OF_CCs = s  #クラスタ数
     NUM_OF_CORES = k  #1クラスタを構成するコア数
-    NUM_OF_TASKS = len(node)
+    NUM_OF_TASKS = len(node)  #タスク数
     SAME_DIFF_RATIO = ratio  #クラスタ内の通信時間とクラスタ外の通信時間の比率
     sl = sl
     
@@ -65,17 +65,35 @@ def culc_makespan(node, edge, pred, succ, s, k, ratio, sl):
     
     
     #↓(1)-----～タスク割り当て～-------------------------------------------------------------------------------------------------------------------------------------------------------
-    s = 0  #現在の時刻
-    g = 0
+    t = 0  #現在の時刻
 
     while(len(executed_tasks) != NUM_OF_TASKS):  #すべてのタスクの実行が終了したら、ループ終了
         
+        """
+        #↓-----デバッグ--------------------------------------------
+        print('executed_tasks = ', end = '')
+        print(executed_tasks)
+        print('sl = ', end = '')
+        print(sl)
+        print('t = ', end = '')
+        print(t)
+        print('target = ', end = '')
+        for i in range(NUM_OF_CCs):
+            for j in range(NUM_OF_CORES):
+                print(target[i][j])
+        #print('result = ', end = '')
+        #for i in result:
+            #print(i)
+        print("--------------------------------------------------")
+        #↑-----デバッグ--------------------------------------------
+        """
+        
         if(len(sl) != 0):
             head = sl[0]  #スケジューリングリストの先頭
-            
+
         else:  #スケジューリングリストが空の場合
-            advance_time(NUM_OF_CCs, NUM_OF_CORES, s, target, result, executed_tasks)
-            s += 1
+            advance_time(NUM_OF_CCs, NUM_OF_CORES, t, target, result, executed_tasks)
+            t += 1
             continue
         
         
@@ -96,17 +114,16 @@ def culc_makespan(node, edge, pred, succ, s, k, ratio, sl):
                     if(target[i][j][0] == -1):  #クラスタiに空きがある
                         vacant_flag = 1
                         will_allocate_core = j  #このクラスタの中で、おそらく割り当てるコア
+                        break
                 #↑(3)-------------------------------------------------------------------------------
                 
                 #↓(6)-----クラスタiに空きがない場合、最速のATをしらべる--------------------------------
                 if(vacant_flag == -1):
                     earliest_at = 999999999
-                    earliest_at_core = -1  #最速のATのコア番号
                     
                     for j in range(NUM_OF_CORES):
                         if(earliest_at > result[target[i][j][0]][3]):
                             earliest_at = result[target[i][j][0]][3]
-                            earliest_at_core = j
                             will_allocate_core = j  #このクラスタの中で、おそらく割り当てるコア
                 #↑(6)-------------------------------------------------------------------------------
                 
@@ -115,15 +132,17 @@ def culc_makespan(node, edge, pred, succ, s, k, ratio, sl):
                     
                     pred_cc = result[pred_head][0]  #pred_headが割り当てられているクラスタ番号
                     pred_finish = result[pred_head][3]  #pred_headの実行終了時刻
-                    communication_cost = 0  #通信時間
-                    earliest_idle_time = 0  #クラスタiの中のコアの最速のAT
                     
                     #↓(5)-----pred_headが割り当てられているクラスタ番号とiが同じ--------------
                     if(pred_cc == i):
                         communication_cost = edge[pred_head][head]  #通信時間はクラスタ内の通信時間
                         
                         if(vacant_flag == 1):  #クラスタiに空きがある
-                            consider_time = pred_finish + communication_cost
+                            if(t > pred_finish + communication_cost):
+                                consider_time = t
+                            else:
+                                consider_time = pred_finish + communication_cost
+                            
                             if(eft < consider_time):
                                 eft = consider_time
                         
@@ -133,7 +152,7 @@ def culc_makespan(node, edge, pred, succ, s, k, ratio, sl):
                                 consider_time = earliest_at
                             else:
                                 consider_time = pred_finish + communication_cost
-                            
+                        
                             if(eft < consider_time):
                                 eft = consider_time
                     #↑(5)------------------------------------------------------------------
@@ -143,7 +162,11 @@ def culc_makespan(node, edge, pred, succ, s, k, ratio, sl):
                         communication_cost = edge[pred_head][head] * SAME_DIFF_RATIO  #通信時間はクラスタ外の通信時間
                         
                         if(vacant_flag == 1):  #クラスタiに空きがある
-                            consider_time = pred_finish + communication_cost
+                            if(t > pred_finish + communication_cost):
+                                consider_time = t
+                            else:
+                                consider_time = pred_finish + communication_cost
+                            
                             if(eft < consider_time):
                                 eft = consider_time
                         
@@ -159,23 +182,31 @@ def culc_makespan(node, edge, pred, succ, s, k, ratio, sl):
                     #↑(7)------------------------------------------------------------------
                         
                 #↑(4)-------------------------------------------------------------------------------
-                
-                #↓(8)-----eftが更新されたか調べる-------------------------------
+
+                #↓(8)-----min_eftが更新されたか調べる-------------------------------
                 if(min_eft > eft):
                     min_eft = eft
                     earliest_CC = i
                     earliest_core = will_allocate_core
                 #↑(8)----------------------------------------------------------
             
+            #↓(9)-----割り当てる対象のコアがアイドル状態になるまで待つ---------------------------
+            while(target[earliest_CC][earliest_core][0] != -1):
+                advance_time(NUM_OF_CCs, NUM_OF_CORES, t, target, result, executed_tasks)
+                t += 1
+            #↑(9)-----割り当てる対象のコアがアイドル状態になるまで待つ---------------------------
+
             allocate_core(node, min_eft, earliest_CC, earliest_core, head, target, result, sl)  #headを割り当てる
             
         #↑(2)------------------------------------------------------------------------------------------------------------------
             
         else:  #headがlegalでなはいなら
             #スケジューリングリストの先頭が実行可能になるまで待つ
-            advance_time(NUM_OF_CCs, NUM_OF_CORES, s, target, result, executed_tasks)
-            s += 1
+            advance_time(NUM_OF_CCs, NUM_OF_CORES, t, target, result, executed_tasks)
+            t += 1
 
     #↑(1)-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-    return result
+    makespan = t
+
+    return result, makespan

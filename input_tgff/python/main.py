@@ -1,5 +1,6 @@
 import time
 import math
+import copy
 from q_learning import ql
 from dag import read_dag
 from task_allocation import culc_makespan
@@ -33,8 +34,29 @@ def ranku_calc(n):
 		ranku[n] = node[n] + max_sum
 
 
+#changeを受け取り、クラスタ外の通信が必要な部分の通信時間(edge)を更新
+def recalc(result, edge_original, edge, ratio, change):
+    edge = copy.deepcopy(edge_original)  #まずもとに戻す
+
+    for change_edge in change:
+        edge[change_edge[0]][change_edge[1]] = edge_original[change_edge[0]][change_edge[1]] * ratio
+    
+    return edge
 
 
+#スケジューリング結果から、クラスタ外の通信が必要な部分の通信時間(edge)を更新
+def diff_edge(result, edge_original, edge, pred, num_of_node):
+    change = []
+    
+    for task in range(num_of_node):  #スケジューリングリストを全探索
+        for pred_task in pred[task]:  #taskの前任タスクを全探索
+            if(result[pred_task][0] != result[task][0]):  #前任タスクと割り当てられたクラスタが異なる場合
+                change.append([pred_task, task])
+
+    return change
+
+
+#↓(1)-----開始---------------------------------------------------------------------------------------------------
 
 NUM_OF_NODE, node, edge, pred, succ, exit = read_dag()  #DAGの読み込み
 
@@ -59,42 +81,97 @@ print(exit)
 print('\n')
 
 
+edge_original = copy.deepcopy(edge)  #元の通信時間
 
-#ranku値の計算
+
+#↓(2)-----ranku値の計算-----------------
 ranku = [0] * NUM_OF_NODE
 ranku_calc(0)
+#↑(2)----------------------------------
 
-print('ranku = ', end = '')
-print(ranku)
-print('\n')
-
-
+#↓(3)-----強化学習--------------------------------------------------------------------------------------
 #----------------------------------------------------
 start_time = time.perf_counter()  #時間計測開始
 #----------------------------------------------------
 
-
-q_sa, s_list = ql(NUM_OF_NODE, node, edge, pred, succ, exit, ranku, 0, 1.0, 0.8, 10000000000)
-
+q_sa, sl = ql(NUM_OF_NODE, node, edge_original, pred, succ, exit, ranku, 0, 1.0, 0.8, 10000000000)
 
 #----------------------------------------------------------------
 execution_time = time.perf_counter() - start_time  #時間計測終了
 print('計算にかかった時間 = %f' % execution_time)
 #----------------------------------------------------------------
 
-"""
-print('q_sa = ', end = '')
-for i in q_sa:
-	for j in i:
-		print(math.floor(j), end='')
-		print(', ', end='')
-	print('\n')
-"""
+print('sl = ', end = '')
+print(sl)
+#↑(3)-----強化学習--------------------------------------------------------------------------------------
 
-print('s_list = ', end = '')
-print(s_list)
+#↓(4)-----メイクスパンの計算----------------------------------------------------
+result, makespan_before = culc_makespan(node, edge_original, pred, succ, 2, 4, 3, sl)
 
-result = culc_makespan(node, edge, pred, succ, 2, 2, 3, s_list)
+print('makespan = ', end = '')
+print(makespan_before)
+#↑(4)-----メイクスパンの計算----------------------------------------------------
 
-for i in result:
-    print(i)
+#↓(5)-----通信時間再計算------------------------------------------------------------------------
+change = diff_edge(result, edge_original, edge, pred, NUM_OF_NODE)  
+edge = recalc(result, edge_original, edge, 3, change)  #通信時間を再計算
+
+best_makespan = 99999999
+makespan_sum = 0
+finish_flag = 0
+count = 1
+
+while(True):
+	#↓(2)-----ranku値の計算-----------------
+	ranku = [0] * NUM_OF_NODE
+	ranku_calc(0)
+	#↑(2)----------------------------------
+
+	#↓(3)-----強化学習--------------------------------------------------------------------------------------
+	#----------------------------------------------------
+	start_time = time.perf_counter()  #時間計測開始
+	#----------------------------------------------------
+
+	q_sa, sl = ql(NUM_OF_NODE, node, edge_original, pred, succ, exit, ranku, 0, 1.0, 0.8, 10000000000)
+
+	#----------------------------------------------------------------
+	execution_time = time.perf_counter() - start_time  #時間計測終了
+	print('計算にかかった時間 = %f' % execution_time)
+	#----------------------------------------------------------------
+
+	print('sl = ', end = '')
+	print(sl)
+	#↑(3)-----強化学習--------------------------------------------------------------------------------------
+
+	#↓(6)-----メイクスパンの計算----------------------------------------------------
+	result, makespan_after = culc_makespan(node, edge_original, pred, succ, 2, 4, 3, sl)
+
+	print('makespan = ', end = '')
+	print(makespan_after)
+	makespan_sum += makespan_after
+	print('makespan_ave = ', end = '')
+	print(makespan_sum / count)
+	#↑(6)-----メイクスパンの計算----------------------------------------------------
+
+	if(best_makespan > makespan_after):
+		best_makespan = makespan_after
+		
+		change = diff_edge(result, edge_original, edge, pred, NUM_OF_NODE)  
+		edge = recalc(result, edge_original, edge, 3, change)  #通信時間を再計算
+
+		finish_flag = 0
+
+	else:
+		finish_flag += 1
+		if(finish_flag == 5):
+			break
+
+	makespan_before = makespan_after
+	count += 1
+
+ 
+	print("-------------------------------------再計算中-----------------------------------------")
+
+#↑(5)-----通信時間再計算------------------------------------------------------------------------
+
+#↑(1)------------------------------------------------------------------------------------------------------------
