@@ -2,13 +2,13 @@
 seed 4
 
 # 生成するDAGの数
-tg_cnt 5
+tg_cnt 1
 
 # DAGの最小タスク数。 x y → xから+-yの範囲で変動する
-task_cnt 30 1
+task_cnt 150 1
 
 # ノードに入力されるエッジの最大数と出力するエッジの最大数を設定
-task_degree 3 2
+task_degree 5 3
 
 # new algorithmを使用
 #gen_series_parallel true
