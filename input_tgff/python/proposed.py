@@ -68,7 +68,7 @@ q_sa, sl = ql(NUM_OF_NODE, node, edge_original, pred, succ, exit, ranku, 0, 1.0,
 #↑(3)-----強化学習--------------------------------------------------------------------------------------
 
 #↓(4)-----メイクスパンの計算----------------------------------------------------
-best_result, best_makespan = culc_makespan(node, edge_original, pred, succ, 3, 2, 3, sl)
+best_result, best_makespan = culc_makespan(node, edge_original, pred, succ, 4, 1, 3, sl)
 
 print('makespan_first = ', end = '')
 print(best_makespan)
