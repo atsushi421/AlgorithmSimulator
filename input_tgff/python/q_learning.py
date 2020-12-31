@@ -118,7 +118,7 @@ def ql(num_of_node, node, edge, pred, succ, exit, ranku, en, a, g, n):
 		if(finish_flag == (num_of_node - 1)):
 			true_flag += 1
 		
-			if (true_flag == 30000):  #この値はタスク数などに比例して大きくしないといけない
+			if (true_flag == 10000):  #この値はタスク数などに比例して大きくしないといけない
 				break
 
 		else:

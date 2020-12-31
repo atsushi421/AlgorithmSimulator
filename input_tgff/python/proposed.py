@@ -68,7 +68,7 @@ q_sa, sl = ql(NUM_OF_NODE, node, edge_original, pred, succ, exit, ranku, 0, 1.0,
 #↑(3)-----強化学習--------------------------------------------------------------------------------------
 
 #↓(4)-----メイクスパンの計算----------------------------------------------------
-best_result, best_makespan = culc_makespan(node, edge_original, pred, succ, 4, 1, 3, sl)
+best_result, best_makespan = culc_makespan(node, edge_original, pred, succ, 3, 2, 3, sl)
 
 print('makespan_first = ', end = '')
 print(best_makespan)
@@ -100,14 +100,14 @@ while(True):
 	if(best_makespan > makespan):  #より良いメイクスパンを得たら
 		best_makespan = makespan
 		best_result = copy.deepcopy(result)
+		change = diff_edge(result, edge_original, edge, pred, NUM_OF_NODE)  #クラスタ外の通信をしている部分を特定
+		edge = recalc(result, edge_original, edge, 3, change)  #通信時間を再計算
 		finish_flag = 0
 	else:
 		finish_flag += 1
-		if(finish_flag == 10):
+		if(finish_flag == 5):
 			break
 
-	change = diff_edge(result, edge_original, edge, pred, NUM_OF_NODE)  #クラスタ外の通信をしている部分を特定
-	edge = recalc(result, edge_original, edge, 3, change)  #通信時間を再計算
 	print("-------------------------------------再計算中-----------------------------------------")
 
 #↑(5)-----通信時間再計算------------------------------------------------------------------------
