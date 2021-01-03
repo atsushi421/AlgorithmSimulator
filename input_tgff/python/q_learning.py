@@ -3,8 +3,8 @@ import math
 
 
 
-#enはエントリーノード。aは学習率。gは割引率。nは反復回数。　＜使用例＞q_sa,s_list = ql(NUM_OF_NODE, node, edge, pred, succ, exit, ranku, 0, 1.0, 0.8, 1000000)
-def ql(num_of_node, node, edge, pred, succ, exit, ranku, en, a, g, n):
+#enはエントリーノード。aは学習率。gは割引率。nは反復回数。　＜使用例＞q_sa,s_list = ql(NUM_OF_NODE, node, pred, succ, exit, ranku, 0, 1.0, 0.8, 1000000)
+def ql(num_of_node, node, pred, succ, exit, ranku, en, a, g, n):
 
 	count = 0  #何エピソード学習したか
 	true_flag = 0
@@ -118,7 +118,7 @@ def ql(num_of_node, node, edge, pred, succ, exit, ranku, en, a, g, n):
 		if(finish_flag == (num_of_node - 1)):
 			true_flag += 1
 		
-			if (true_flag == 10000):  #この値はタスク数などに比例して大きくしないといけない
+			if (true_flag == 300000):  #この値はタスク数などに比例して大きくしないといけない。メイクスパンに関わる　→　(100:300000)
 				break
 
 		else:
@@ -185,7 +185,9 @@ def ql(num_of_node, node, edge, pred, succ, exit, ranku, en, a, g, n):
 
 	# ↑-----------------------------------------------------------------------------------------------------------------
 
+	#↓-----結果の出力---------------
+	print('sl = ', end = '')
+	print(s_list)
+	#↑-----結果の出力---------------
 
-
-
-	return q_sa, s_list
+	return s_list

@@ -54,68 +54,112 @@ def diff_edge(result, edge_original, edge, pred, num_of_node):
 
 
 #↓(1)-----開始---------------------------------------------------------------------------------------------------
+#↓-----初期設定----------------------------------------------------------------------------------------------
 NUM_OF_NODE, node, edge, pred, succ, exit = read_dag()  #DAGの読み込み
 
-edge_original = copy.deepcopy(edge)  #元の通信時間
+#↓-----CCRの設定---------------------------------------------------
+for i in range(NUM_OF_NODE):
+    for j in range(NUM_OF_NODE):
+        edge[i][j] = int(edge[i][j] / 1)
+for i in range(NUM_OF_NODE):
+    node[i] = int(node[i] / 1)
+#↑-----CCRの設定---------------------------------------------------
+
+NUM_OF_CCs = 5  #クラスタ数
+NUM_OF_CORES = 16  #コア数
+SAME_DIFF_RATIO = 3  #クラスタ内の通信時間とクラスタ外の通信時間の比率
+
+#初期通信時間を保存
+edge_original = copy.deepcopy(edge)
+#↑-----初期設定----------------------------------------------------------------------------------------------
+
 
 #↓(2)-----ranku値の計算-----------------
 ranku = [0] * NUM_OF_NODE
 ranku_calc(0)
 #↑(2)----------------------------------
 
+
 #↓(3)-----強化学習--------------------------------------------------------------------------------------
-q_sa, sl = ql(NUM_OF_NODE, node, edge_original, pred, succ, exit, ranku, 0, 1.0, 0.8, 10000000000)
+sl = ql(NUM_OF_NODE, node, pred, succ, exit, ranku, 0, 1.0, 0.8, 10000000000)
 #↑(3)-----強化学習--------------------------------------------------------------------------------------
 
-#↓(4)-----メイクスパンの計算----------------------------------------------------
-best_result, best_makespan = culc_makespan(node, edge_original, pred, succ, 3, 2, 3, sl)
 
-print('makespan_first = ', end = '')
-print(best_makespan)
+#↓(4)-----メイクスパンの計算----------------------------------------------------
+best_result, best_makespan = culc_makespan(node, edge_original, pred, succ, NUM_OF_CCs, NUM_OF_CORES, SAME_DIFF_RATIO, sl)
 #↑(4)-----メイクスパンの計算----------------------------------------------------
 
+
 #↓(5)-----通信時間再計算------------------------------------------------------------------------
+#↓-----通信時間を更新----------------------------------------------------------
+num_of_edge = 0  #DAGのエッジの総数
+for i in range(NUM_OF_NODE):
+	for j in range(NUM_OF_NODE):
+		if(edge[i][j] != 0):  #エッジがあれば
+			num_of_edge += 1
+
 change = diff_edge(best_result, edge_original, edge, pred, NUM_OF_NODE)  #クラスタ外の通信をしている部分を特定
-edge = recalc(best_result, edge_original, edge, 3, change)  #通信時間を再計算
+num_change = len(change)  #クラスタ外の通信が必要な回数
+
+for i in range(NUM_OF_NODE):
+	for j in range(NUM_OF_NODE):
+		edge[i][j] += int(edge[i][j] * 3 * (num_change / num_of_edge))
+#↑-----通信時間を更新----------------------------------------------------------
 
 finish_flag = 0
 
+#↓-----メイクスパンが最短になるまで繰り返す----------------------------------------------------
 while(True):
 	#↓(2)-----ranku値の計算-----------------
 	ranku = [0] * NUM_OF_NODE
 	ranku_calc(0)
 	#↑(2)----------------------------------
 
+
 	#↓(3)-----強化学習--------------------------------------------------------------------------------------
-	q_sa, sl = ql(NUM_OF_NODE, node, edge_original, pred, succ, exit, ranku, 0, 1.0, 0.8, 10000000000)
+	sl = ql(NUM_OF_NODE, node, pred, succ, exit, ranku, 0, 1.0, 0.8, 10000000000)
 	#↑(3)-----強化学習--------------------------------------------------------------------------------------
 
-	#↓(6)-----メイクスパンの計算----------------------------------------------------
-	result, makespan = culc_makespan(node, edge_original, pred, succ, 3, 2, 3, sl)
 
-	print('makespan = ', end = '')
-	print(makespan)
+	#↓(6)-----メイクスパンの計算----------------------------------------------------
+	result, makespan = culc_makespan(node, edge_original, pred, succ, NUM_OF_CCs, NUM_OF_CORES, SAME_DIFF_RATIO, sl)
 	#↑(6)-----メイクスパンの計算----------------------------------------------------
 
+
+	#↓-----終了判定--------------------------------------------------------------------------------------------------
 	if(best_makespan > makespan):  #より良いメイクスパンを得たら
+		#↓----bestの更新---------------------------
 		best_makespan = makespan
 		best_result = copy.deepcopy(result)
-		change = diff_edge(result, edge_original, edge, pred, NUM_OF_NODE)  #クラスタ外の通信をしている部分を特定
-		edge = recalc(result, edge_original, edge, 3, change)  #通信時間を再計算
+		#↑----bestの更新---------------------------
+  
+		#↓-----通信時間を更新----------------------------------------------------------
+		change = diff_edge(best_result, edge_original, edge, pred, NUM_OF_NODE)  #クラスタ外の通信をしている部分を特定
+		num_change = len(change)  #クラスタ外の通信が必要な回数
+
+		for i in range(NUM_OF_NODE):
+			for j in range(NUM_OF_NODE):
+				edge[i][j] += int(edge[i][j] * 3 * (num_change / num_of_edge))
+		#↑-----通信時間を更新----------------------------------------------------------
+  
 		finish_flag = 0
 	else:
 		finish_flag += 1
-		if(finish_flag == 5):
-			break
+		if(finish_flag == 1):
+			break  #終了
+	#↑-----終了判定--------------------------------------------------------------------------------------------------
 
 	print("-------------------------------------再計算中-----------------------------------------")
+#↑-----メイクスパンが最短になるまで繰り返す----------------------------------------------------
 
 #↑(5)-----通信時間再計算------------------------------------------------------------------------
 
+#↓-----結果の出力--------------------------------------
 print("終了")
 for i in best_result:
     print(i)
 print('best_makespan = ', end = '')
 print(best_makespan)
+#↑-----結果の出力--------------------------------------
 
 #↑(1)------------------------------------------------------------------------------------------------------------

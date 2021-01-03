@@ -4,7 +4,7 @@ def read_dag():
 	# ↓まずTYPEと実行時間の対応を取得----------------------------------------------------
 
 	# ファイルを開く
-	tgff_file = open("../tgff/task_100.tgff", "r")
+	tgff_file = open("../tgff/task_50.tgff", "r")
 
 
 	type_cost = [] #TYPEと実行時間の対応関係の配列
@@ -48,7 +48,7 @@ def read_dag():
 	# ↓TASKの情報を取得-----------------------------------------------------
 
 	# ファイルを開く
-	tgff_file = open("../tgff/task_100.tgff", "r")
+	tgff_file = open("../tgff/task_50.tgff", "r")
 
 
 	node = [] #各タスクの実行時間を格納
@@ -81,7 +81,7 @@ def read_dag():
 	# ↓ARCの情報を取得----------------------------------------------------------------
 
 	# ファイルを開く
-	tgff_file = open("../tgff/task_100.tgff", "r")
+	tgff_file = open("../tgff/task_50.tgff", "r")
 
 
 	edge = [[0 for j in range(num_of_node)] for i in range(num_of_node)] #edgeの配列はタスク数(len(node))×タスク数の2次元配列
@@ -100,7 +100,7 @@ def read_dag():
 		if(line_list[0] == 'ARC'):
 			from_t = int(line_list[3][3:]) #エッジを出すタスク
 			to_t = int(line_list[5][3:]) #エッジの先のタスク
-			comm_cost = int(type_cost[int(line_list[7])] / 10) #TYPEに書かれている時間の10分の1を通信時間とする
+			comm_cost = int(type_cost[int(line_list[7])]) #TYPEに書かれている時間を通信時間とする
 
 			edge[from_t][to_t] = comm_cost
 
