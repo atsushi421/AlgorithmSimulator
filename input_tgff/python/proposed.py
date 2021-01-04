@@ -31,18 +31,8 @@ def ranku_calc(n):
 		ranku[n] = node[n] + max_sum
 
 
-#changeを受け取り、クラスタ外の通信が必要な部分の通信時間(edge)を更新
-def recalc(result, edge_original, edge, ratio, change):
-    edge = copy.deepcopy(edge_original)  #まずもとに戻す
-
-    for change_edge in change:
-        edge[change_edge[0]][change_edge[1]] = edge_original[change_edge[0]][change_edge[1]] * ratio
-    
-    return edge
-
-
 #スケジューリング結果から、クラスタ外の通信が必要な部分の通信時間(edge)を更新
-def diff_edge(result, edge_original, edge, pred, num_of_node):
+def diff_edge(result, pred, num_of_node):
     change = []
     
     for task in range(num_of_node):  #スケジューリングリストを全探索
@@ -55,18 +45,18 @@ def diff_edge(result, edge_original, edge, pred, num_of_node):
 
 #↓(1)-----開始---------------------------------------------------------------------------------------------------
 #↓-----初期設定----------------------------------------------------------------------------------------------
-NUM_OF_NODE, node, edge, pred, succ, exit = read_dag()  #DAGの読み込み
+NUM_OF_NODE, node, edge, pred, succ, entry, exit = read_dag()  #DAGの読み込み
 
 #↓-----CCRの設定---------------------------------------------------
 for i in range(NUM_OF_NODE):
     for j in range(NUM_OF_NODE):
-        edge[i][j] = int(edge[i][j] / 1)
+        edge[i][j] = int(edge[i][j] * 4.8)
 for i in range(NUM_OF_NODE):
-    node[i] = int(node[i] / 1)
+    node[i] = int(node[i] / 1.163)
 #↑-----CCRの設定---------------------------------------------------
 
-NUM_OF_CCs = 5  #クラスタ数
-NUM_OF_CORES = 16  #コア数
+NUM_OF_CCs = 3  #クラスタ数
+NUM_OF_CORES = 4  #コア数
 SAME_DIFF_RATIO = 3  #クラスタ内の通信時間とクラスタ外の通信時間の比率
 
 #初期通信時間を保存
@@ -76,12 +66,14 @@ edge_original = copy.deepcopy(edge)
 
 #↓(2)-----ranku値の計算-----------------
 ranku = [0] * NUM_OF_NODE
-ranku_calc(0)
+for i in range(len(entry)):
+	if(entry[i] == 1):
+		ranku_calc(i)
 #↑(2)----------------------------------
 
 
 #↓(3)-----強化学習--------------------------------------------------------------------------------------
-sl = ql(NUM_OF_NODE, node, pred, succ, exit, ranku, 0, 1.0, 0.8, 10000000000)
+sl = ql(NUM_OF_NODE, node, pred, succ, entry, exit, ranku, 0, 1.0, 0.8, 10000000000)
 #↑(3)-----強化学習--------------------------------------------------------------------------------------
 
 
@@ -98,12 +90,12 @@ for i in range(NUM_OF_NODE):
 		if(edge[i][j] != 0):  #エッジがあれば
 			num_of_edge += 1
 
-change = diff_edge(best_result, edge_original, edge, pred, NUM_OF_NODE)  #クラスタ外の通信をしている部分を特定
+change = diff_edge(best_result, pred, NUM_OF_NODE)  #クラスタ外の通信をしている部分を特定
 num_change = len(change)  #クラスタ外の通信が必要な回数
 
 for i in range(NUM_OF_NODE):
 	for j in range(NUM_OF_NODE):
-		edge[i][j] += int(edge[i][j] * 3 * (num_change / num_of_edge))
+		edge[i][j] = int((edge_original[i][j] * (1 - num_change/num_of_edge)) + (edge_original[i][j] * SAME_DIFF_RATIO * (num_change/num_of_edge)))
 #↑-----通信時間を更新----------------------------------------------------------
 
 finish_flag = 0
@@ -112,12 +104,14 @@ finish_flag = 0
 while(True):
 	#↓(2)-----ranku値の計算-----------------
 	ranku = [0] * NUM_OF_NODE
-	ranku_calc(0)
+	for i in range(len(entry)):
+		if(entry[i] == 1):
+			ranku_calc(i)
 	#↑(2)----------------------------------
 
 
 	#↓(3)-----強化学習--------------------------------------------------------------------------------------
-	sl = ql(NUM_OF_NODE, node, pred, succ, exit, ranku, 0, 1.0, 0.8, 10000000000)
+	sl = ql(NUM_OF_NODE, node, pred, succ, entry, exit, ranku, 0, 1.0, 0.8, 10000000000)
 	#↑(3)-----強化学習--------------------------------------------------------------------------------------
 
 
@@ -127,19 +121,19 @@ while(True):
 
 
 	#↓-----終了判定--------------------------------------------------------------------------------------------------
-	if(best_makespan > makespan):  #より良いメイクスパンを得たら
+	if(best_makespan >= makespan):  #より良いメイクスパンを得たら
 		#↓----bestの更新---------------------------
 		best_makespan = makespan
 		best_result = copy.deepcopy(result)
 		#↑----bestの更新---------------------------
   
 		#↓-----通信時間を更新----------------------------------------------------------
-		change = diff_edge(best_result, edge_original, edge, pred, NUM_OF_NODE)  #クラスタ外の通信をしている部分を特定
+		change = diff_edge(best_result, pred, NUM_OF_NODE)  #クラスタ外の通信をしている部分を特定
 		num_change = len(change)  #クラスタ外の通信が必要な回数
 
 		for i in range(NUM_OF_NODE):
 			for j in range(NUM_OF_NODE):
-				edge[i][j] += int(edge[i][j] * 3 * (num_change / num_of_edge))
+				edge[i][j] = int((edge_original[i][j] * (1 - num_change/num_of_edge)) + (edge_original[i][j] * SAME_DIFF_RATIO * (num_change/num_of_edge)))
 		#↑-----通信時間を更新----------------------------------------------------------
   
 		finish_flag = 0

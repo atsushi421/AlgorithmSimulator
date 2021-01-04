@@ -4,7 +4,7 @@ def read_dag():
 	# ↓まずTYPEと実行時間の対応を取得----------------------------------------------------
 
 	# ファイルを開く
-	tgff_file = open("../tgff/task_50.tgff", "r")
+	tgff_file = open("../tgff/task_100.tgff", "r")
 
 
 	type_cost = [] #TYPEと実行時間の対応関係の配列
@@ -48,7 +48,7 @@ def read_dag():
 	# ↓TASKの情報を取得-----------------------------------------------------
 
 	# ファイルを開く
-	tgff_file = open("../tgff/task_50.tgff", "r")
+	tgff_file = open("../tgff/task_100.tgff", "r")
 
 
 	node = [] #各タスクの実行時間を格納
@@ -81,7 +81,7 @@ def read_dag():
 	# ↓ARCの情報を取得----------------------------------------------------------------
 
 	# ファイルを開く
-	tgff_file = open("../tgff/task_50.tgff", "r")
+	tgff_file = open("../tgff/task_100.tgff", "r")
 
 
 	edge = [[0 for j in range(num_of_node)] for i in range(num_of_node)] #edgeの配列はタスク数(len(node))×タスク数の2次元配列
@@ -130,7 +130,16 @@ def read_dag():
 				succ[in_node].append(out_node)
 	# ↑-------------------------------------------------------------------------------
 
-	# ↓exitタスクを求める---------------------------------------------------------------
+	#↓-----entryノードを求める------------------------------------------------------
+	entry = [0] * num_of_node
+
+	for i in range(num_of_node):
+		if(len(pred[i]) == 0):
+			entry[i] = 1
+	#↑-----entryノードを求める------------------------------------------------------
+ 
+
+	# ↓exitタスクを求める-----------------------------------------------------------
 	exit = [0] * num_of_node
 
 	for i in range(num_of_node):
@@ -139,4 +148,4 @@ def read_dag():
 	#↑------------------------------------------------------------------------------
 
 
-	return num_of_node, node, edge, pred, succ, exit
+	return num_of_node, node, edge, pred, succ, entry, exit

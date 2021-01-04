@@ -55,18 +55,18 @@ def diff_edge(result, edge_original, edge, pred, num_of_node):
 
 #↓(1)-----開始---------------------------------------------------------------------------------------------------
 #↓-----初期設定----------------------------------------------------------------------------------------------
-NUM_OF_NODE, node, edge, pred, succ, exit = read_dag()  #DAGの読み込み
+NUM_OF_NODE, node, edge, pred, succ, entry, exit = read_dag()  #DAGの読み込み
 
 #↓-----CCRの設定---------------------------------------------------
 for i in range(NUM_OF_NODE):
     for j in range(NUM_OF_NODE):
-        edge[i][j] = int(edge[i][j] / 1)
+        edge[i][j] = int(edge[i][j] * 4.8)
 for i in range(NUM_OF_NODE):
-    node[i] = int(node[i] / 1)
+    node[i] = int(node[i] / 1.163)
 #↑-----CCRの設定---------------------------------------------------
 
-NUM_OF_CCs = 5  #クラスタ数
-NUM_OF_CORES = 16  #コア数
+NUM_OF_CCs = 3  #クラスタ数
+NUM_OF_CORES = 4  #コア数
 SAME_DIFF_RATIO = 3  #クラスタ内の通信時間とクラスタ外の通信時間の比率
 
 #初期通信時間を保存
@@ -82,12 +82,14 @@ for i in range(NUM_OF_NODE):
 #↑-----通信時間を平均にする----------------------------
 
 ranku = [0] * NUM_OF_NODE
-ranku_calc(0)
+for i in range(len(entry)):
+	if(entry[i] == 1):
+		ranku_calc(i)
 #↑(2)----------------------------------------------------------------------
 
 
 #↓(3)-----強化学習--------------------------------------------------------------------------------------
-sl = ql(NUM_OF_NODE, node, pred, succ, exit, ranku, 0, 1.0, 0.8, 10000000000)
+sl = ql(NUM_OF_NODE, node, pred, succ, entry, exit, ranku, 0, 1.0, 0.8, 10000000000)
 #↑(3)-----強化学習--------------------------------------------------------------------------------------
 
 

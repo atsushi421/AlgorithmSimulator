@@ -1,32 +1,38 @@
 # 乱数生成の種
-seed 5
+seed 6
 
 # 生成するDAGの数
 tg_cnt 1
 
 # DAGの最小タスク数。 x y → xから+-yの範囲で変動する
-task_cnt 100 1
+task_cnt 10 1
 
 # ノードに入力されるエッジの最大数と出力するエッジの最大数を設定
 task_degree 5 3
 
+# グラフに複数の開始ノードがある確率を設定
+prob_multi_start_nodes 1.0
+
+# 複数の開始ノード（平均値、乗数）を持つグラフの開始ノード数を設定
+start_node 3 1
+
 # new algorithmを使用
-#gen_series_parallel true
+gen_series_parallel true
 
 # 直列チェーンの長さ（平均値、乗数）を設定。これは1で良い気がする
-#series_len 1 0
+series_len 0 3
 
 # 直列チェーンの幅（平均値、乗数）を設定。幅は3以上ないと細くなる。
-#series_wid 5 0
+series_wid 3 1
 
 # 出口ノードを1つにする
-#series_must_rejoin true
+series_must_rejoin true
 
 # 追加するローカルアークの数を設定。詳細不明
-#series_local_xover 30
+#series_local_xover 5
 
 # 追加するグローバルアークの数を設定。詳細不明
-#series_global_xover 30
+#series_global_xover 10
 
 # DAGをtgffファイルに出力
 tg_write
