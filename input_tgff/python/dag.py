@@ -100,7 +100,7 @@ def read_dag():
 		if(line_list[0] == 'ARC'):
 			from_t = int(line_list[3][3:]) #エッジを出すタスク
 			to_t = int(line_list[5][3:]) #エッジの先のタスク
-			comm_cost = int(type_cost[int(line_list[7])] / 10) #TYPEに書かれている時間の10分の1を通信時間とする
+			comm_cost = int(type_cost[int(line_list[7])]) #TYPEに書かれている時間を通信時間とする
 
 			edge[from_t][to_t] = comm_cost
 
@@ -130,7 +130,16 @@ def read_dag():
 				succ[in_node].append(out_node)
 	# ↑-------------------------------------------------------------------------------
 
-	# ↓exitタスクを求める---------------------------------------------------------------
+	#↓-----entryノードを求める------------------------------------------------------
+	entry = [0] * num_of_node
+
+	for i in range(num_of_node):
+		if(len(pred[i]) == 0):
+			entry[i] = 1
+	#↑-----entryノードを求める------------------------------------------------------
+ 
+
+	# ↓exitタスクを求める-----------------------------------------------------------
 	exit = [0] * num_of_node
 
 	for i in range(num_of_node):
@@ -139,4 +148,4 @@ def read_dag():
 	#↑------------------------------------------------------------------------------
 
 
-	return num_of_node, node, edge, pred, succ, exit
+	return num_of_node, node, edge, pred, succ, entry, exit
