@@ -50,13 +50,13 @@ NUM_OF_NODE, node, edge, pred, succ, entry, exit = read_dag()  #DAGの読み込�
 #↓-----CCRの設定---------------------------------------------------
 for i in range(NUM_OF_NODE):
     for j in range(NUM_OF_NODE):
-        edge[i][j] = int(edge[i][j] * 4.8)
+        edge[i][j] = int(edge[i][j] / 4)
 for i in range(NUM_OF_NODE):
-    node[i] = int(node[i] / 1.163)
+    node[i] = int(node[i] * 2.5)
 #↑-----CCRの設定---------------------------------------------------
 
-NUM_OF_CCs = 3  #クラスタ数
-NUM_OF_CORES = 4  #コア数
+NUM_OF_CCs = 2  #クラスタ数
+NUM_OF_CORES = 3  #コア数
 SAME_DIFF_RATIO = 3  #クラスタ内の通信時間とクラスタ外の通信時間の比率
 
 #初期通信時間を保存
@@ -98,7 +98,7 @@ for i in range(NUM_OF_NODE):
 		edge[i][j] = int((edge_original[i][j] * (1 - num_change/num_of_edge)) + (edge_original[i][j] * SAME_DIFF_RATIO * (num_change/num_of_edge)))
 #↑-----通信時間を更新----------------------------------------------------------
 
-finish_flag = 0
+before_change = num_change  #前回のクラスタ外の通信回数。終了判定に使用する
 
 #↓-----メイクスパンが最短になるまで繰り返す----------------------------------------------------
 while(True):
@@ -121,7 +121,7 @@ while(True):
 
 
 	#↓-----終了判定--------------------------------------------------------------------------------------------------
-	if(best_makespan >= makespan):  #より良いメイクスパンを得たら
+	if(best_makespan >= makespan):  #より良いメイクスパン（もしくは同じ）を得たら
 		#↓----bestの更新---------------------------
 		best_makespan = makespan
 		best_result = copy.deepcopy(result)
@@ -130,17 +130,19 @@ while(True):
 		#↓-----通信時間を更新----------------------------------------------------------
 		change = diff_edge(best_result, pred, NUM_OF_NODE)  #クラスタ外の通信をしている部分を特定
 		num_change = len(change)  #クラスタ外の通信が必要な回数
+  
+		if(before_change == num_change):  #前回とクラスタ外の通信回数が等しいなら
+			break  #終了
+		else:
+			before_change = num_change  #クラスタ外の通信回数を保存
 
 		for i in range(NUM_OF_NODE):
 			for j in range(NUM_OF_NODE):
 				edge[i][j] = int((edge_original[i][j] * (1 - num_change/num_of_edge)) + (edge_original[i][j] * SAME_DIFF_RATIO * (num_change/num_of_edge)))
 		#↑-----通信時間を更新----------------------------------------------------------
-  
-		finish_flag = 0
+
 	else:
-		finish_flag += 1
-		if(finish_flag == 1):
-			break  #終了
+		break  #終了
 	#↑-----終了判定--------------------------------------------------------------------------------------------------
 
 	print("-------------------------------------再計算中-----------------------------------------")

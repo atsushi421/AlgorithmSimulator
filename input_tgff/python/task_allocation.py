@@ -28,6 +28,7 @@ def advance_time(num_of_cc, num_of_core, current_time, target, result, executed_
         for j in range(num_of_core):
                 if(target[i][j][0] != -1 and current_time >= result[target[i][j][0]][2]):  #そのコアにタスクが割り当てられていて、開始時刻になったら
                     target[i][j][1] -= 1  #1秒分処理
+                    target[i][j][2] += 1  #1秒間そのコアを使用した。利用率の計算に使用する
                     if(target[i][j][1] == 0):
                         executed_tasks.append(target[i][j][0])  #そのタスクを実行済みにする
                         target[i][j][0] = -1  #コアをアイドル状態にする
@@ -52,8 +53,8 @@ def culc_makespan(node, edge, pred, succ, s, k, ratio, sl):
     sl = sl
     
     #- 割り当てる対象のコア構成を示す3次元リスト。
-    #- [どのクラスタ][どのコア][コア情報　→　実行中のタスク(アイドル状態の時は-1), 実行中のタスクの残り実行時間]
-    target = [[[-1, 0] for i in range(NUM_OF_CORES)] for j in range(NUM_OF_CCs)]
+    #- [どのクラスタ][どのコア][コア情報　→　実行中のタスク(アイドル状態の時は-1), 実行中のタスクの残り実行時間, そのコアが使用された時間]
+    target = [[[-1, 0, 0] for i in range(NUM_OF_CORES)] for j in range(NUM_OF_CCs)]
     
     #- スケジューリング結果。
     #- [どのクラスタ, どのコア, 実行開始時間, 実行終了時間]
@@ -106,6 +107,8 @@ def culc_makespan(node, edge, pred, succ, s, k, ratio, sl):
                         if(earliest_at > result[target[i][j][0]][3]):
                             earliest_at = result[target[i][j][0]][3]
                             will_allocate_core = j  #このクラスタの中で、おそらく割り当てるコア
+                
+                    eft = earliest_at  #そのタスクが前任タスクを持たない場合（エントリータスク）、最速のATがEFTとなる
                 #↑(6)-------------------------------------------------------------------------------
                 
                 #↓(4)-----headの前任タスクをすべて調べる----------------------------------------------
@@ -197,6 +200,15 @@ def culc_makespan(node, edge, pred, succ, s, k, ratio, sl):
         print(i)
     print('makespan = ', end = '')
     print(makespan)
+    print('利用率 = ')
+    for i in range(NUM_OF_CCs):
+        for j in range(NUM_OF_CORES):
+            print('No.', end = '')
+            print(i, end = '')
+            print(', ', end = '')
+            print(j, end = '')
+            print(' = ', end = '')
+            print(target[i][j][2] / makespan * 100)
     #↑-----結果の出力-------------------------------
     
     return result, makespan

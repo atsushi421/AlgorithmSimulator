@@ -37,9 +37,9 @@ NUM_OF_NODE, node, edge, pred, succ, entry, exit = read_dag()  #DAGの読み込�
 #↓-----CCRの設定---------------------------------------------------
 for i in range(NUM_OF_NODE):
     for j in range(NUM_OF_NODE):
-        edge[i][j] = int(edge[i][j] * 4.8)
+        edge[i][j] = int(edge[i][j] / 4)
 for i in range(NUM_OF_NODE):
-    node[i] = int(node[i] / 1.163)
+    node[i] = int(node[i] * 2.5)
 #↑-----CCRの設定---------------------------------------------------
 
 NUM_OF_CCs = 1  #クラスタ数
