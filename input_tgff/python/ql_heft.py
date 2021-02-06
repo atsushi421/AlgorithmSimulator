@@ -57,12 +57,29 @@ def diff_edge(result, edge_original, edge, pred, num_of_node):
 #↓-----初期設定----------------------------------------------------------------------------------------------
 NUM_OF_NODE, node, edge, pred, succ, entry, exit = read_dag()  #DAGの読み込み
 
+#↓-----実行時間を一部だけ大きくする----------------------------------------
+for i in range(NUM_OF_NODE):
+    if(i % 5 == 0):
+        node[i] = int(node[i] * 10)
+#↑-----実行時間を一部だけ大きくする----------------------------------------
+
+"""
+num_of_edge = 0  #DAGのエッジの総数
+for i in range(NUM_OF_NODE):
+	for j in range(NUM_OF_NODE):
+		if(edge[i][j] != 0):  #エッジがあれば
+			num_of_edge += 1
+
+			if(num_of_edge % 5 == 0):
+				edge[i][j] = int(edge[i][j] * 5)
+"""
+
 #↓-----CCRの設定---------------------------------------------------
 for i in range(NUM_OF_NODE):
     for j in range(NUM_OF_NODE):
-        edge[i][j] = int(edge[i][j] / 4)
+        edge[i][j] = int(edge[i][j] * 1.5)
 for i in range(NUM_OF_NODE):
-    node[i] = int(node[i] * 2.5)
+    node[i] = int(node[i] * 3)
 #↑-----CCRの設定---------------------------------------------------
 
 NUM_OF_CCs = 2  #クラスタ数

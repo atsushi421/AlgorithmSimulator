@@ -87,7 +87,7 @@ def culc_makespan(node, edge, pred, succ, s, k, ratio, sl):
         
             #↓-----全部のクラスタを総当たり---------------------------------------------------------------------------------
             for i in range(NUM_OF_CCs):  #headをクラスタiに割り当てたとして、EFTを計算する
-                eft = 0  #クラスタiにおけるeft
+                eft = t  #クラスタiにおけるeft
                 
                 #↓(3)-----クラスタiに空きがあるか調べる-----------------------------------------------
                 vacant_flag = -1  #クラスタiに空きがあれば、1。そうでなければ-1
@@ -200,6 +200,7 @@ def culc_makespan(node, edge, pred, succ, s, k, ratio, sl):
         print(i)
     print('makespan = ', end = '')
     print(makespan)
+    sum = 0  #平均利用率の計算に用いる
     print('利用率 = ')
     for i in range(NUM_OF_CCs):
         for j in range(NUM_OF_CORES):
@@ -209,6 +210,9 @@ def culc_makespan(node, edge, pred, succ, s, k, ratio, sl):
             print(j, end = '')
             print(' = ', end = '')
             print(target[i][j][2] / makespan * 100)
+            sum += target[i][j][2] / makespan * 100
+    print('平均利用率 = ', end = '')
+    print(sum / (NUM_OF_CCs * NUM_OF_CORES))
     #↑-----結果の出力-------------------------------
     
     return result, makespan

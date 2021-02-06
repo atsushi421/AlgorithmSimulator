@@ -47,16 +47,33 @@ def diff_edge(result, pred, num_of_node):
 #↓-----初期設定----------------------------------------------------------------------------------------------
 NUM_OF_NODE, node, edge, pred, succ, entry, exit = read_dag()  #DAGの読み込み
 
+#↓-----実行時間を一部だけ大きくする----------------------------------------
+for i in range(NUM_OF_NODE):
+    if(i % 5 == 0):
+        node[i] = int(node[i] * 10)
+#↑-----実行時間を一部だけ大きくする----------------------------------------
+
+"""
+num_of_edge = 0  #DAGのエッジの総数
+for i in range(NUM_OF_NODE):
+	for j in range(NUM_OF_NODE):
+		if(edge[i][j] != 0):  #エッジがあれば
+			num_of_edge += 1
+
+			if(num_of_edge % 5 == 0):
+				edge[i][j] = int(edge[i][j] * 5)
+"""
+
 #↓-----CCRの設定---------------------------------------------------
 for i in range(NUM_OF_NODE):
     for j in range(NUM_OF_NODE):
-        edge[i][j] = int(edge[i][j] / 4)
+        edge[i][j] = int(edge[i][j] * 2)
 for i in range(NUM_OF_NODE):
-    node[i] = int(node[i] * 2.5)
+    node[i] = int(node[i] * 2)
 #↑-----CCRの設定---------------------------------------------------
 
 NUM_OF_CCs = 2  #クラスタ数
-NUM_OF_CORES = 3  #コア数
+NUM_OF_CORES = 4  #コア数
 SAME_DIFF_RATIO = 3  #クラスタ内の通信時間とクラスタ外の通信時間の比率
 
 #初期通信時間を保存
@@ -65,6 +82,12 @@ edge_original = copy.deepcopy(edge)
 
 
 #↓(2)-----ranku値の計算-----------------
+#↓-----通信時間を平均にする----------------------------
+for i in range(NUM_OF_NODE):
+    for j in range(NUM_OF_NODE):
+        edge[i][j] = int((edge[i][j] + (edge[i][j] * SAME_DIFF_RATIO)) / 2)
+#↑-----通信時間を平均にする----------------------------
+
 ranku = [0] * NUM_OF_NODE
 for i in range(len(entry)):
 	if(entry[i] == 1):
@@ -92,6 +115,11 @@ for i in range(NUM_OF_NODE):
 
 change = diff_edge(best_result, pred, NUM_OF_NODE)  #クラスタ外の通信をしている部分を特定
 num_change = len(change)  #クラスタ外の通信が必要な回数
+
+print('クラスタ外の通信回数 = ', end = '')
+print(num_change)
+print('エッジの総数 = ', end = '')
+print(num_of_edge)
 
 for i in range(NUM_OF_NODE):
 	for j in range(NUM_OF_NODE):
@@ -130,6 +158,11 @@ while(True):
 		#↓-----通信時間を更新----------------------------------------------------------
 		change = diff_edge(best_result, pred, NUM_OF_NODE)  #クラスタ外の通信をしている部分を特定
 		num_change = len(change)  #クラスタ外の通信が必要な回数
+  
+		print('クラスタ外の通信回数 = ', end = '')
+		print(num_change)
+		print('エッジの総数 = ', end = '')
+		print(num_of_edge)
   
 		if(before_change == num_change):  #前回とクラスタ外の通信回数が等しいなら
 			break  #終了

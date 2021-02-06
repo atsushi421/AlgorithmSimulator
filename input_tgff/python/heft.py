@@ -30,20 +30,49 @@ def ranku_calc(n):
 		ranku[n] = node[n] + max_sum
 
 
+#スケジューリング結果から、クラスタ外の通信が必要な部分の通信時間(edge)を更新
+def diff_edge(result, pred, num_of_node):
+    change = []
+    
+    for task in range(num_of_node):  #スケジューリングリストを全探索
+        for pred_task in pred[task]:  #taskの前任タスクを全探索
+            if(result[pred_task][0] != result[task][0]):  #前任タスクと割り当てられたクラスタが異なる場合
+                change.append([pred_task, task])
+
+    return change
+
+
 #↓(1)-----開始---------------------------------------------------------------------------------------------------
 #↓-----初期設定----------------------------------------------------------------------------------------------
 NUM_OF_NODE, node, edge, pred, succ, entry, exit = read_dag()  #DAGの読み込み
 
+#↓-----実行時間を一部だけ大きくする----------------------------------------
+for i in range(NUM_OF_NODE):
+    if(i % 5 == 0):
+        node[i] = int(node[i] * 10)
+#↑-----実行時間を一部だけ大きくする----------------------------------------
+
+"""
+num_of_edge = 0  #DAGのエッジの総数
+for i in range(NUM_OF_NODE):
+	for j in range(NUM_OF_NODE):
+		if(edge[i][j] != 0):  #エッジがあれば
+			num_of_edge += 1
+
+			if(num_of_edge % 5 == 0):
+				edge[i][j] = int(edge[i][j] * 5)
+"""
+
 #↓-----CCRの設定---------------------------------------------------
 for i in range(NUM_OF_NODE):
     for j in range(NUM_OF_NODE):
-        edge[i][j] = int(edge[i][j] / 4)
+        edge[i][j] = int(edge[i][j] * 2)
 for i in range(NUM_OF_NODE):
-    node[i] = int(node[i] * 2.5)
+    node[i] = int(node[i] * 2)
 #↑-----CCRの設定---------------------------------------------------
 
-NUM_OF_CCs = 1  #クラスタ数
-NUM_OF_CORES = 1  #コア数
+NUM_OF_CCs = 2  #クラスタ数
+NUM_OF_CORES = 4  #コア数
 SAME_DIFF_RATIO = 3  #クラスタ内の通信時間とクラスタ外の通信時間の比率
 
 #初期通信時間を保存
@@ -105,5 +134,19 @@ print(sl)
 #↓(4)-----メイクスパンの計算----------------------------------------------------
 best_result, best_makespan = culc_makespan(node, edge_original, pred, succ, NUM_OF_CCs, NUM_OF_CORES, SAME_DIFF_RATIO, sl)
 #↑(4)-----メイクスパンの計算----------------------------------------------------
+
+num_of_edge = 0  #DAGのエッジの総数
+for i in range(NUM_OF_NODE):
+	for j in range(NUM_OF_NODE):
+		if(edge[i][j] != 0):  #エッジがあれば
+			num_of_edge += 1
+
+change = diff_edge(best_result, pred, NUM_OF_NODE)  #クラスタ外の通信をしている部分を特定
+num_change = len(change)  #クラスタ外の通信が必要な回数
+
+print('クラスタ外の通信回数 = ', end = '')
+print(num_change)
+print('エッジの総数 = ', end = '')
+print(num_of_edge)
 
 #↑(1)------------------------------------------------------------------------------------------------------------

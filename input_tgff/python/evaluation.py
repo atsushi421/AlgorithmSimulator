@@ -1,7 +1,9 @@
+import statistics
+
 def calc_speedup():
     
     #単一実行時間 task_100
-    single_makespan = [23422, 27312, 29159, 21523, 26043, 23705, 26506, 24345]
+    single_makespan = [154452, 149030, 159854, 153382, 134666, 169458, 132234, 125310]
     
     
     #↓-----Speedup_HEFT_2-----------------------------------------------------------------------------------------------------------------------
@@ -9,12 +11,16 @@ def calc_speedup():
     get_makespan = []
     
     # ファイルを開く
-    tgff_file = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/change_corenum_makespan/makespan_heft/makespan_2.txt", "r")
+    tgff_file = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/new_change_corenum_makespan_60/makespan_heft/makespan_2.txt", "r")
     
     # 1行ずつ読み込む
     for line in tgff_file:
         # 文字列の半角スペース・タブ区切りで区切ったリストを取得
         line_list = line.split()
+        
+        # 空行はスキップ
+        if(line == '\n'):
+            continue
         
         get_makespan.append(int(line_list[0]))
         
@@ -27,7 +33,7 @@ def calc_speedup():
     
     #結果の書き込み（wは上書きモード）
     #ファイルを開く
-    f = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/change_corenum_speedup/speedup_heft/speedup_2.txt", "w")
+    f = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/new_change_corenum_speedup_60/speedup_heft/speedup_2.txt", "w")
     
     for i in speedup_heft_2:
         result = str(i)
@@ -39,7 +45,7 @@ def calc_speedup():
     get_makespan = []
     
     # ファイルを開く
-    tgff_file = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/change_corenum_makespan/makespan_heft/makespan_3.txt", "r")
+    tgff_file = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/new_change_corenum_makespan_60/makespan_heft/makespan_3.txt", "r")
     
     # 1行ずつ読み込む
     for line in tgff_file:
@@ -57,7 +63,7 @@ def calc_speedup():
     
     #結果の書き込み（wは上書きモード）
     #ファイルを開く
-    f = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/change_corenum_speedup/speedup_heft/speedup_3.txt", "w")
+    f = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/new_change_corenum_speedup_60/speedup_heft/speedup_3.txt", "w")
     
     for i in speedup_heft_3:
         result = str(i)
@@ -69,12 +75,16 @@ def calc_speedup():
     get_makespan = []
     
     # ファイルを開く
-    tgff_file = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/change_corenum_makespan/makespan_heft/makespan_4.txt", "r")
+    tgff_file = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/new_change_corenum_makespan_60/makespan_heft/makespan_4.txt", "r")
     
     # 1行ずつ読み込む
     for line in tgff_file:
         # 文字列の半角スペース・タブ区切りで区切ったリストを取得
         line_list = line.split()
+        
+        # 空行はスキップ
+        if(line == '\n'):
+            continue
         
         get_makespan.append(int(line_list[0]))
         
@@ -87,7 +97,7 @@ def calc_speedup():
     
     #結果の書き込み（wは上書きモード）
     #ファイルを開く
-    f = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/change_corenum_speedup/speedup_heft/speedup_4.txt", "w")
+    f = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/new_change_corenum_speedup_60/speedup_heft/speedup_4.txt", "w")
     
     for i in speedup_heft_4:
         result = str(i)
@@ -99,7 +109,7 @@ def calc_speedup():
     get_makespan = []
     
     # ファイルを開く
-    tgff_file = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/change_corenum_makespan/makespan_heft/makespan_5.txt", "r")
+    tgff_file = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/new_change_corenum_makespan_60/makespan_heft/makespan_5.txt", "r")
     
     # 1行ずつ読み込む
     for line in tgff_file:
@@ -117,7 +127,7 @@ def calc_speedup():
     
     #結果の書き込み（wは上書きモード）
     #ファイルを開く
-    f = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/change_corenum_speedup/speedup_heft/speedup_5.txt", "w")
+    f = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/new_change_corenum_speedup_60/speedup_heft/speedup_5.txt", "w")
     
     for i in speedup_heft_5:
         result = str(i)
@@ -130,7 +140,7 @@ def calc_speedup():
     get_makespan = []
     
     # ファイルを開く
-    tgff_file = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/change_corenum_makespan/makespan_propose/makespan_2.txt", "r")
+    tgff_file = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/new_change_corenum_makespan_60/makespan_propose/makespan_2.txt", "r")
     
     # 1行ずつ読み込む
     for line in tgff_file:
@@ -148,7 +158,7 @@ def calc_speedup():
     
     #結果の書き込み（wは上書きモード）
     #ファイルを開く
-    f = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/change_corenum_speedup/speedup_propose/speedup_2.txt", "w")
+    f = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/new_change_corenum_speedup_60/speedup_propose/speedup_2.txt", "w")
     
     for i in speedup_propose_2:
         result = str(i)
@@ -160,7 +170,7 @@ def calc_speedup():
     get_makespan = []
     
     # ファイルを開く
-    tgff_file = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/change_corenum_makespan/makespan_propose/makespan_3.txt", "r")
+    tgff_file = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/new_change_corenum_makespan_60/makespan_propose/makespan_3.txt", "r")
     
     # 1行ずつ読み込む
     for line in tgff_file:
@@ -178,7 +188,7 @@ def calc_speedup():
     
     #結果の書き込み（wは上書きモード）
     #ファイルを開く
-    f = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/change_corenum_speedup/speedup_propose/speedup_3.txt", "w")
+    f = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/new_change_corenum_speedup_60/speedup_propose/speedup_3.txt", "w")
     
     for i in speedup_propose_3:
         result = str(i)
@@ -190,7 +200,7 @@ def calc_speedup():
     get_makespan = []
     
     # ファイルを開く
-    tgff_file = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/change_corenum_makespan/makespan_propose/makespan_4.txt", "r")
+    tgff_file = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/new_change_corenum_makespan_60/makespan_propose/makespan_4.txt", "r")
     
     # 1行ずつ読み込む
     for line in tgff_file:
@@ -208,7 +218,7 @@ def calc_speedup():
     
     #結果の書き込み（wは上書きモード）
     #ファイルを開く
-    f = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/change_corenum_speedup/speedup_propose/speedup_4.txt", "w")
+    f = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/new_change_corenum_speedup_60/speedup_propose/speedup_4.txt", "w")
     
     for i in speedup_propose_4:
         result = str(i)
@@ -220,7 +230,7 @@ def calc_speedup():
     get_makespan = []
     
     # ファイルを開く
-    tgff_file = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/change_corenum_makespan/makespan_propose/makespan_5.txt", "r")
+    tgff_file = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/new_change_corenum_makespan_60/makespan_propose/makespan_5.txt", "r")
     
     # 1行ずつ読み込む
     for line in tgff_file:
@@ -238,7 +248,7 @@ def calc_speedup():
     
     #結果の書き込み（wは上書きモード）
     #ファイルを開く
-    f = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/change_corenum_speedup/speedup_propose/speedup_5.txt", "w")
+    f = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/new_change_corenum_speedup_60/speedup_propose/speedup_5.txt", "w")
     
     for i in speedup_propose_5:
         result = str(i)
@@ -251,7 +261,7 @@ def calc_speedup():
     get_makespan = []
     
     # ファイルを開く
-    tgff_file = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/change_corenum_makespan/makespan_qlheft/makespan_2.txt", "r")
+    tgff_file = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/new_change_corenum_makespan_60/makespan_qlheft/makespan_2.txt", "r")
     
     # 1行ずつ読み込む
     for line in tgff_file:
@@ -269,7 +279,7 @@ def calc_speedup():
     
     #結果の書き込み（wは上書きモード）
     #ファイルを開く
-    f = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/change_corenum_speedup/speedup_qlheft/speedup_2.txt", "w")
+    f = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/new_change_corenum_speedup_60/speedup_qlheft/speedup_2.txt", "w")
     
     for i in speedup_qlheft_2:
         result = str(i)
@@ -281,7 +291,7 @@ def calc_speedup():
     get_makespan = []
     
     # ファイルを開く
-    tgff_file = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/change_corenum_makespan/makespan_qlheft/makespan_3.txt", "r")
+    tgff_file = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/new_change_corenum_makespan_60/makespan_qlheft/makespan_3.txt", "r")
     
     # 1行ずつ読み込む
     for line in tgff_file:
@@ -299,7 +309,7 @@ def calc_speedup():
     
     #結果の書き込み（wは上書きモード）
     #ファイルを開く
-    f = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/change_corenum_speedup/speedup_qlheft/speedup_3.txt", "w")
+    f = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/new_change_corenum_speedup_60/speedup_qlheft/speedup_3.txt", "w")
     
     for i in speedup_qlheft_3:
         result = str(i)
@@ -311,7 +321,7 @@ def calc_speedup():
     get_makespan = []
     
     # ファイルを開く
-    tgff_file = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/change_corenum_makespan/makespan_qlheft/makespan_4.txt", "r")
+    tgff_file = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/new_change_corenum_makespan_60/makespan_qlheft/makespan_4.txt", "r")
     
     # 1行ずつ読み込む
     for line in tgff_file:
@@ -329,7 +339,7 @@ def calc_speedup():
     
     #結果の書き込み（wは上書きモード）
     #ファイルを開く
-    f = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/change_corenum_speedup/speedup_qlheft/speedup_4.txt", "w")
+    f = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/new_change_corenum_speedup_60/speedup_qlheft/speedup_4.txt", "w")
     
     for i in speedup_qlheft_4:
         result = str(i)
@@ -341,7 +351,7 @@ def calc_speedup():
     get_makespan = []
     
     # ファイルを開く
-    tgff_file = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/change_corenum_makespan/makespan_qlheft/makespan_5.txt", "r")
+    tgff_file = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/new_change_corenum_makespan_60/makespan_qlheft/makespan_5.txt", "r")
     
     # 1行ずつ読み込む
     for line in tgff_file:
@@ -359,7 +369,7 @@ def calc_speedup():
     
     #結果の書き込み（wは上書きモード）
     #ファイルを開く
-    f = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/change_corenum_speedup/speedup_qlheft/speedup_5.txt", "w")
+    f = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/new_change_corenum_speedup_60/speedup_qlheft/speedup_5.txt", "w")
     
     for i in speedup_qlheft_5:
         result = str(i)
@@ -374,7 +384,7 @@ def calc_efficiency():
     get_speedup = []
     
     # ファイルを開く
-    tgff_file = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/change_corenum_speedup/speedup_heft/speedup_2.txt", "r")
+    tgff_file = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/new_change_corenum_speedup_60/speedup_heft/speedup_2.txt", "r")
     
     # 1行ずつ読み込む
     for line in tgff_file:
@@ -392,7 +402,7 @@ def calc_efficiency():
     
     #結果の書き込み（wは上書きモード）
     #ファイルを開く
-    f = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/change_corenum_efficiency/efficiency_heft/efficiency_2.txt", "w")
+    f = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/new_change_corenum_efficiency_60/efficiency_heft/efficiency_2.txt", "w")
     
     for i in efficiency_heft_2:
         result = str(i)
@@ -404,7 +414,7 @@ def calc_efficiency():
     get_speedup = []
     
     # ファイルを開く
-    tgff_file = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/change_corenum_speedup/speedup_heft/speedup_3.txt", "r")
+    tgff_file = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/new_change_corenum_speedup_60/speedup_heft/speedup_3.txt", "r")
     
     # 1行ずつ読み込む
     for line in tgff_file:
@@ -422,7 +432,7 @@ def calc_efficiency():
     
     #結果の書き込み（wは上書きモード）
     #ファイルを開く
-    f = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/change_corenum_efficiency/efficiency_heft/efficiency_3.txt", "w")
+    f = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/new_change_corenum_efficiency_60/efficiency_heft/efficiency_3.txt", "w")
     
     for i in efficiency_heft_3:
         result = str(i)
@@ -434,7 +444,7 @@ def calc_efficiency():
     get_speedup = []
     
     # ファイルを開く
-    tgff_file = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/change_corenum_speedup/speedup_heft/speedup_4.txt", "r")
+    tgff_file = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/new_change_corenum_speedup_60/speedup_heft/speedup_4.txt", "r")
     
     # 1行ずつ読み込む
     for line in tgff_file:
@@ -452,7 +462,7 @@ def calc_efficiency():
     
     #結果の書き込み（wは上書きモード）
     #ファイルを開く
-    f = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/change_corenum_efficiency/efficiency_heft/efficiency_4.txt", "w")
+    f = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/new_change_corenum_efficiency_60/efficiency_heft/efficiency_4.txt", "w")
     
     for i in efficiency_heft_4:
         result = str(i)
@@ -464,7 +474,7 @@ def calc_efficiency():
     get_speedup = []
     
     # ファイルを開く
-    tgff_file = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/change_corenum_speedup/speedup_heft/speedup_5.txt", "r")
+    tgff_file = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/new_change_corenum_speedup_60/speedup_heft/speedup_5.txt", "r")
     
     # 1行ずつ読み込む
     for line in tgff_file:
@@ -482,7 +492,7 @@ def calc_efficiency():
     
     #結果の書き込み（wは上書きモード）
     #ファイルを開く
-    f = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/change_corenum_efficiency/efficiency_heft/efficiency_5.txt", "w")
+    f = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/new_change_corenum_efficiency_60/efficiency_heft/efficiency_5.txt", "w")
     
     for i in efficiency_heft_5:
         result = str(i)
@@ -495,7 +505,7 @@ def calc_efficiency():
     get_speedup = []
     
     # ファイルを開く
-    tgff_file = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/change_corenum_speedup/speedup_propose/speedup_2.txt", "r")
+    tgff_file = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/new_change_corenum_speedup_60/speedup_propose/speedup_2.txt", "r")
     
     # 1行ずつ読み込む
     for line in tgff_file:
@@ -513,7 +523,7 @@ def calc_efficiency():
     
     #結果の書き込み（wは上書きモード）
     #ファイルを開く
-    f = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/change_corenum_efficiency/efficiency_propose/efficiency_2.txt", "w")
+    f = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/new_change_corenum_efficiency_60/efficiency_propose/efficiency_2.txt", "w")
     
     for i in efficiency_propose_2:
         result = str(i)
@@ -525,7 +535,7 @@ def calc_efficiency():
     get_speedup = []
     
     # ファイルを開く
-    tgff_file = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/change_corenum_speedup/speedup_propose/speedup_3.txt", "r")
+    tgff_file = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/new_change_corenum_speedup_60/speedup_propose/speedup_3.txt", "r")
     
     # 1行ずつ読み込む
     for line in tgff_file:
@@ -543,7 +553,7 @@ def calc_efficiency():
     
     #結果の書き込み（wは上書きモード）
     #ファイルを開く
-    f = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/change_corenum_efficiency/efficiency_propose/efficiency_3.txt", "w")
+    f = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/new_change_corenum_efficiency_60/efficiency_propose/efficiency_3.txt", "w")
     
     for i in efficiency_propose_3:
         result = str(i)
@@ -555,7 +565,7 @@ def calc_efficiency():
     get_speedup = []
     
     # ファイルを開く
-    tgff_file = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/change_corenum_speedup/speedup_propose/speedup_4.txt", "r")
+    tgff_file = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/new_change_corenum_speedup_60/speedup_propose/speedup_4.txt", "r")
     
     # 1行ずつ読み込む
     for line in tgff_file:
@@ -573,7 +583,7 @@ def calc_efficiency():
     
     #結果の書き込み（wは上書きモード）
     #ファイルを開く
-    f = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/change_corenum_efficiency/efficiency_propose/efficiency_4.txt", "w")
+    f = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/new_change_corenum_efficiency_60/efficiency_propose/efficiency_4.txt", "w")
     
     for i in efficiency_propose_4:
         result = str(i)
@@ -585,7 +595,7 @@ def calc_efficiency():
     get_speedup = []
     
     # ファイルを開く
-    tgff_file = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/change_corenum_speedup/speedup_propose/speedup_5.txt", "r")
+    tgff_file = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/new_change_corenum_speedup_60/speedup_propose/speedup_5.txt", "r")
     
     # 1行ずつ読み込む
     for line in tgff_file:
@@ -603,7 +613,7 @@ def calc_efficiency():
     
     #結果の書き込み（wは上書きモード）
     #ファイルを開く
-    f = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/change_corenum_efficiency/efficiency_propose/efficiency_5.txt", "w")
+    f = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/new_change_corenum_efficiency_60/efficiency_propose/efficiency_5.txt", "w")
     
     for i in efficiency_propose_5:
         result = str(i)
@@ -616,7 +626,7 @@ def calc_efficiency():
     get_speedup = []
     
     # ファイルを開く
-    tgff_file = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/change_corenum_speedup/speedup_qlheft/speedup_2.txt", "r")
+    tgff_file = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/new_change_corenum_speedup_60/speedup_qlheft/speedup_2.txt", "r")
     
     # 1行ずつ読み込む
     for line in tgff_file:
@@ -634,7 +644,7 @@ def calc_efficiency():
     
     #結果の書き込み（wは上書きモード）
     #ファイルを開く
-    f = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/change_corenum_efficiency/efficiency_qlheft/efficiency_2.txt", "w")
+    f = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/new_change_corenum_efficiency_60/efficiency_qlheft/efficiency_2.txt", "w")
     
     for i in efficiency_qlheft_2:
         result = str(i)
@@ -646,7 +656,7 @@ def calc_efficiency():
     get_speedup = []
     
     # ファイルを開く
-    tgff_file = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/change_corenum_speedup/speedup_qlheft/speedup_3.txt", "r")
+    tgff_file = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/new_change_corenum_speedup_60/speedup_qlheft/speedup_3.txt", "r")
     
     # 1行ずつ読み込む
     for line in tgff_file:
@@ -664,7 +674,7 @@ def calc_efficiency():
     
     #結果の書き込み（wは上書きモード）
     #ファイルを開く
-    f = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/change_corenum_efficiency/efficiency_qlheft/efficiency_3.txt", "w")
+    f = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/new_change_corenum_efficiency_60/efficiency_qlheft/efficiency_3.txt", "w")
     
     for i in efficiency_qlheft_3:
         result = str(i)
@@ -676,7 +686,7 @@ def calc_efficiency():
     get_speedup = []
     
     # ファイルを開く
-    tgff_file = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/change_corenum_speedup/speedup_qlheft/speedup_4.txt", "r")
+    tgff_file = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/new_change_corenum_speedup_60/speedup_qlheft/speedup_4.txt", "r")
     
     # 1行ずつ読み込む
     for line in tgff_file:
@@ -694,7 +704,7 @@ def calc_efficiency():
     
     #結果の書き込み（wは上書きモード）
     #ファイルを開く
-    f = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/change_corenum_efficiency/efficiency_qlheft/efficiency_4.txt", "w")
+    f = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/new_change_corenum_efficiency_60/efficiency_qlheft/efficiency_4.txt", "w")
     
     for i in efficiency_qlheft_4:
         result = str(i)
@@ -706,7 +716,7 @@ def calc_efficiency():
     get_speedup = []
     
     # ファイルを開く
-    tgff_file = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/change_corenum_speedup/speedup_qlheft/speedup_5.txt", "r")
+    tgff_file = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/new_change_corenum_speedup_60/speedup_qlheft/speedup_5.txt", "r")
     
     # 1行ずつ読み込む
     for line in tgff_file:
@@ -724,12 +734,492 @@ def calc_efficiency():
     
     #結果の書き込み（wは上書きモード）
     #ファイルを開く
-    f = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/change_corenum_efficiency/efficiency_qlheft/efficiency_5.txt", "w")
+    f = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/new_change_corenum_efficiency_60/efficiency_qlheft/efficiency_5.txt", "w")
     
     for i in efficiency_qlheft_5:
         result = str(i)
         f.write(result + '\n')
     #↑-----Efficiency_QLHEFT_5-----------------------------------------------------------------------------------------------------------------------
 
+#CCR変化の中央値を取得する
+def CCR_median_heft():
+    
+    #↓-----HEFT_0.05------------------------------------------------------------------------------------------------------------------------
+    #ファイルから取得したメイクスパン
+    get_data = []
+    
+    # ファイルを開く
+    tgff_file = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/new_change_CCR_makespan/makespan_heft/makespan_0.05.txt", "r")
+    
+    # 1行ずつ読み込む
+    for line in tgff_file:
+        # 文字列の半角スペース・タブ区切りで区切ったリストを取得
+        line_list = line.split()
+        
+        get_data.append(float(line_list[0]))
+    
+    print('median_low_', end = '')
+    print('0.05 = ', end = '')
+    print(statistics.median_low(get_data))
+    print('median_high_', end = '')
+    print('0.05 = ', end = '')
+    print(statistics.median_high(get_data))
+    #↑-----HEFT_0.05------------------------------------------------------------------------------------------------------------------------
+    
+    #↓-----HEFT_0.1------------------------------------------------------------------------------------------------------------------------
+    #ファイルから取得したメイクスパン
+    get_data = []
+    
+    # ファイルを開く
+    tgff_file = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/new_change_CCR_makespan/makespan_heft/makespan_0.1.txt", "r")
+    
+    # 1行ずつ読み込む
+    for line in tgff_file:
+        # 文字列の半角スペース・タブ区切りで区切ったリストを取得
+        line_list = line.split()
+        
+        get_data.append(float(line_list[0]))
+    
+    print('median_low_', end = '')
+    print('0.1 = ', end = '')
+    print(statistics.median_low(get_data))
+    print('median_high_', end = '')
+    print('0.1 = ', end = '')
+    print(statistics.median_high(get_data))
+    #↑-----HEFT_0.1------------------------------------------------------------------------------------------------------------------------
+    
+    #↓-----HEFT_0.25------------------------------------------------------------------------------------------------------------------------
+    #ファイルから取得したメイクスパン
+    get_data = []
+    
+    # ファイルを開く
+    tgff_file = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/new_change_CCR_makespan/makespan_heft/makespan_0.25.txt", "r")
+    
+    # 1行ずつ読み込む
+    for line in tgff_file:
+        # 文字列の半角スペース・タブ区切りで区切ったリストを取得
+        line_list = line.split()
+        
+        get_data.append(float(line_list[0]))
+    
+    print('median_low_', end = '')
+    print('0.25 = ', end = '')
+    print(statistics.median_low(get_data))
+    print('median_high_', end = '')
+    print('0.25 = ', end = '')
+    print(statistics.median_high(get_data))
+    #↑-----HEFT_0.25------------------------------------------------------------------------------------------------------------------------
+    
+    #↓-----HEFT_0.5------------------------------------------------------------------------------------------------------------------------
+    #ファイルから取得したメイクスパン
+    get_data = []
+    
+    # ファイルを開く
+    tgff_file = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/new_change_CCR_makespan/makespan_heft/makespan_0.5.txt", "r")
+    
+    # 1行ずつ読み込む
+    for line in tgff_file:
+        # 文字列の半角スペース・タブ区切りで区切ったリストを取得
+        line_list = line.split()
+        
+        get_data.append(float(line_list[0]))
+    
+    print('median_low_', end = '')
+    print('0.5 = ', end = '')
+    print(statistics.median_low(get_data))
+    print('median_high_', end = '')
+    print('0.5 = ', end = '')
+    print(statistics.median_high(get_data))
+    #↑-----HEFT_0.5------------------------------------------------------------------------------------------------------------------------
+    
+    #↓-----HEFT_1.0------------------------------------------------------------------------------------------------------------------------
+    #ファイルから取得したメイクスパン
+    get_data = []
+    
+    # ファイルを開く
+    tgff_file = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/new_change_CCR_makespan/makespan_heft/makespan_1.0.txt", "r")
+    
+    # 1行ずつ読み込む
+    for line in tgff_file:
+        # 文字列の半角スペース・タブ区切りで区切ったリストを取得
+        line_list = line.split()
+        
+        get_data.append(float(line_list[0]))
+    
+    print('median_low_', end = '')
+    print('1.0 = ', end = '')
+    print(statistics.median_low(get_data))
+    print('median_high_', end = '')
+    print('1.0 = ', end = '')
+    print(statistics.median_high(get_data))
+    #↑-----HEFT_1.0------------------------------------------------------------------------------------------------------------------------
+    
+    #↓-----HEFT_2.0------------------------------------------------------------------------------------------------------------------------
+    #ファイルから取得したメイクスパン
+    get_data = []
+    
+    # ファイルを開く
+    tgff_file = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/new_change_CCR_makespan/makespan_heft/makespan_2.0.txt", "r")
+    
+    # 1行ずつ読み込む
+    for line in tgff_file:
+        # 文字列の半角スペース・タブ区切りで区切ったリストを取得
+        line_list = line.split()
+        
+        get_data.append(float(line_list[0]))
+    
+    print('median_low_', end = '')
+    print('2.0 = ', end = '')
+    print(statistics.median_low(get_data))
+    print('median_high_', end = '')
+    print('2.0 = ', end = '')
+    print(statistics.median_high(get_data))
+    #↑-----HEFT_2.0------------------------------------------------------------------------------------------------------------------------
+
+
+#タスク数変化の中央値を取得する
+def tasknum_median_heft():
+    
+    #↓-----HEFT_20------------------------------------------------------------------------------------------------------------------------
+    #ファイルから取得したメイクスパン
+    get_data = []
+    
+    # ファイルを開く
+    tgff_file = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/new_change_tasknum_makespan/makespan_heft/makespan_20.txt", "r")
+    
+    # 1行ずつ読み込む
+    for line in tgff_file:
+        # 文字列の半角スペース・タブ区切りで区切ったリストを取得
+        line_list = line.split()
+        
+        get_data.append(float(line_list[0]))
+    
+    print('median_low_', end = '')
+    print('20 = ', end = '')
+    print(statistics.median_low(get_data))
+    print('median_high_', end = '')
+    print('20 = ', end = '')
+    print(statistics.median_high(get_data))
+    #↑-----HEFT_20------------------------------------------------------------------------------------------------------------------------
+
+    #↓-----HEFT_50------------------------------------------------------------------------------------------------------------------------
+    #ファイルから取得したメイクスパン
+    get_data = []
+    
+    # ファイルを開く
+    tgff_file = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/new_change_tasknum_makespan/makespan_heft/makespan_50.txt", "r")
+    
+    # 1行ずつ読み込む
+    for line in tgff_file:
+        # 文字列の半角スペース・タブ区切りで区切ったリストを取得
+        line_list = line.split()
+        
+        get_data.append(float(line_list[0]))
+    
+    print('median_low_', end = '')
+    print('50 = ', end = '')
+    print(statistics.median_low(get_data))
+    print('median_high_', end = '')
+    print('50 = ', end = '')
+    print(statistics.median_high(get_data))
+    #↑-----HEFT_50------------------------------------------------------------------------------------------------------------------------
+    
+    #↓-----HEFT_100------------------------------------------------------------------------------------------------------------------------
+    #ファイルから取得したメイクスパン
+    get_data = []
+    
+    # ファイルを開く
+    tgff_file = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/new_change_tasknum_makespan/makespan_heft/makespan_100.txt", "r")
+    
+    # 1行ずつ読み込む
+    for line in tgff_file:
+        # 文字列の半角スペース・タブ区切りで区切ったリストを取得
+        line_list = line.split()
+        
+        get_data.append(float(line_list[0]))
+    
+    print('median_low_', end = '')
+    print('100 = ', end = '')
+    print(statistics.median_low(get_data))
+    print('median_high_', end = '')
+    print('100 = ', end = '')
+    print(statistics.median_high(get_data))
+    #↑-----HEFT_100------------------------------------------------------------------------------------------------------------------------
+    
+    #↓-----HEFT_200------------------------------------------------------------------------------------------------------------------------
+    #ファイルから取得したメイクスパン
+    get_data = []
+    
+    # ファイルを開く
+    tgff_file = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/new_change_tasknum_makespan/makespan_heft/makespan_200.txt", "r")
+    
+    # 1行ずつ読み込む
+    for line in tgff_file:
+        # 文字列の半角スペース・タブ区切りで区切ったリストを取得
+        line_list = line.split()
+        
+        get_data.append(float(line_list[0]))
+    
+    print('median_low_', end = '')
+    print('200 = ', end = '')
+    print(statistics.median_low(get_data))
+    print('median_high_', end = '')
+    print('200 = ', end = '')
+    print(statistics.median_high(get_data))
+    #↑-----HEFT_200------------------------------------------------------------------------------------------------------------------------
+
+
+#CCR変化の中央値を取得する
+def CCR_median_qlheft():
+    
+    #↓-----QLHEFT_0.05------------------------------------------------------------------------------------------------------------------------
+    #ファイルから取得したメイクスパン
+    get_data = []
+    
+    # ファイルを開く
+    tgff_file = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/new_change_CCR_makespan/makespan_qlheft/makespan_0.05.txt", "r")
+    
+    # 1行ずつ読み込む
+    for line in tgff_file:
+        # 文字列の半角スペース・タブ区切りで区切ったリストを取得
+        line_list = line.split()
+        
+        get_data.append(float(line_list[0]))
+    
+    print('median_low_', end = '')
+    print('0.05 = ', end = '')
+    print(statistics.median_low(get_data))
+    print('median_high_', end = '')
+    print('0.05 = ', end = '')
+    print(statistics.median_high(get_data))
+    #↑-----QLHEFT_0.05------------------------------------------------------------------------------------------------------------------------
+    
+    #↓-----QLHEFT_0.1------------------------------------------------------------------------------------------------------------------------
+    #ファイルから取得したメイクスパン
+    get_data = []
+    
+    # ファイルを開く
+    tgff_file = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/new_change_CCR_makespan/makespan_qlheft/makespan_0.1.txt", "r")
+    
+    # 1行ずつ読み込む
+    for line in tgff_file:
+        # 文字列の半角スペース・タブ区切りで区切ったリストを取得
+        line_list = line.split()
+        
+        get_data.append(float(line_list[0]))
+    
+    print('median_low_', end = '')
+    print('0.1 = ', end = '')
+    print(statistics.median_low(get_data))
+    print('median_high_', end = '')
+    print('0.1 = ', end = '')
+    print(statistics.median_high(get_data))
+    #↑-----QLHEFT_0.1------------------------------------------------------------------------------------------------------------------------
+    
+    #↓-----QLHEFT_0.25------------------------------------------------------------------------------------------------------------------------
+    #ファイルから取得したメイクスパン
+    get_data = []
+    
+    # ファイルを開く
+    tgff_file = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/new_change_CCR_makespan/makespan_qlheft/makespan_0.25.txt", "r")
+    
+    # 1行ずつ読み込む
+    for line in tgff_file:
+        # 文字列の半角スペース・タブ区切りで区切ったリストを取得
+        line_list = line.split()
+        
+        get_data.append(float(line_list[0]))
+    
+    print('median_low_', end = '')
+    print('0.25 = ', end = '')
+    print(statistics.median_low(get_data))
+    print('median_high_', end = '')
+    print('0.25 = ', end = '')
+    print(statistics.median_high(get_data))
+    #↑-----QLHEFT_0.25------------------------------------------------------------------------------------------------------------------------
+    
+    #↓-----QLHEFT_0.5------------------------------------------------------------------------------------------------------------------------
+    #ファイルから取得したメイクスパン
+    get_data = []
+    
+    # ファイルを開く
+    tgff_file = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/new_change_CCR_makespan/makespan_qlheft/makespan_0.5.txt", "r")
+    
+    # 1行ずつ読み込む
+    for line in tgff_file:
+        # 文字列の半角スペース・タブ区切りで区切ったリストを取得
+        line_list = line.split()
+        
+        get_data.append(float(line_list[0]))
+    
+    print('median_low_', end = '')
+    print('0.5 = ', end = '')
+    print(statistics.median_low(get_data))
+    print('median_high_', end = '')
+    print('0.5 = ', end = '')
+    print(statistics.median_high(get_data))
+    #↑-----QLHEFT_0.5------------------------------------------------------------------------------------------------------------------------
+    
+    #↓-----QLHEFT_1.0------------------------------------------------------------------------------------------------------------------------
+    #ファイルから取得したメイクスパン
+    get_data = []
+    
+    # ファイルを開く
+    tgff_file = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/new_change_CCR_makespan/makespan_qlheft/makespan_1.0.txt", "r")
+    
+    # 1行ずつ読み込む
+    for line in tgff_file:
+        # 文字列の半角スペース・タブ区切りで区切ったリストを取得
+        line_list = line.split()
+        
+        get_data.append(float(line_list[0]))
+    
+    print('median_low_', end = '')
+    print('1.0 = ', end = '')
+    print(statistics.median_low(get_data))
+    print('median_high_', end = '')
+    print('1.0 = ', end = '')
+    print(statistics.median_high(get_data))
+    #↑-----QLHEFT_1.0------------------------------------------------------------------------------------------------------------------------
+    
+    #↓-----QLHEFT_2.0------------------------------------------------------------------------------------------------------------------------
+    #ファイルから取得したメイクスパン
+    get_data = []
+    
+    # ファイルを開く
+    tgff_file = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/new_change_CCR_makespan/makespan_qlheft/makespan_2.0.txt", "r")
+    
+    # 1行ずつ読み込む
+    for line in tgff_file:
+        # 文字列の半角スペース・タブ区切りで区切ったリストを取得
+        line_list = line.split()
+        
+        get_data.append(float(line_list[0]))
+    
+    print('median_low_', end = '')
+    print('2.0 = ', end = '')
+    print(statistics.median_low(get_data))
+    print('median_high_', end = '')
+    print('2.0 = ', end = '')
+    print(statistics.median_high(get_data))
+    #↑-----QLHEFT_2.0------------------------------------------------------------------------------------------------------------------------
+    
+    #↓-----QLHEFT_4.0------------------------------------------------------------------------------------------------------------------------
+    #ファイルから取得したメイクスパン
+    get_data = []
+    
+    # ファイルを開く
+    tgff_file = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/new_change_CCR_makespan/makespan_qlheft/makespan_4.0.txt", "r")
+    
+    # 1行ずつ読み込む
+    for line in tgff_file:
+        # 文字列の半角スペース・タブ区切りで区切ったリストを取得
+        line_list = line.split()
+        
+        get_data.append(float(line_list[0]))
+    
+    print('median_low_', end = '')
+    print('4.0 = ', end = '')
+    print(statistics.median_low(get_data))
+    print('median_high_', end = '')
+    print('4.0 = ', end = '')
+    print(statistics.median_high(get_data))
+    #↑-----QLHEFT_4.0------------------------------------------------------------------------------------------------------------------------
+
+#タスク数変化の中央値を取得する
+def tasknum_median_qlheft():
+    
+    #↓-----QLHEFT_20------------------------------------------------------------------------------------------------------------------------
+    #ファイルから取得したメイクスパン
+    get_data = []
+    
+    # ファイルを開く
+    tgff_file = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/new_change_tasknum_makespan/makespan_qlheft/makespan_20.txt", "r")
+    
+    # 1行ずつ読み込む
+    for line in tgff_file:
+        # 文字列の半角スペース・タブ区切りで区切ったリストを取得
+        line_list = line.split()
+        
+        get_data.append(float(line_list[0]))
+    
+    print('median_low_', end = '')
+    print('20 = ', end = '')
+    print(statistics.median_low(get_data))
+    print('median_high_', end = '')
+    print('20 = ', end = '')
+    print(statistics.median_high(get_data))
+    #↑-----QLHEFT_20------------------------------------------------------------------------------------------------------------------------
+
+    #↓-----QLHEFT_50------------------------------------------------------------------------------------------------------------------------
+    #ファイルから取得したメイクスパン
+    get_data = []
+    
+    # ファイルを開く
+    tgff_file = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/new_change_tasknum_makespan/makespan_qlheft/makespan_50.txt", "r")
+    
+    # 1行ずつ読み込む
+    for line in tgff_file:
+        # 文字列の半角スペース・タブ区切りで区切ったリストを取得
+        line_list = line.split()
+        
+        get_data.append(float(line_list[0]))
+    
+    print('median_low_', end = '')
+    print('50 = ', end = '')
+    print(statistics.median_low(get_data))
+    print('median_high_', end = '')
+    print('50 = ', end = '')
+    print(statistics.median_high(get_data))
+    #↑-----QLHEFT_50------------------------------------------------------------------------------------------------------------------------
+    
+    #↓-----QLHEFT_100------------------------------------------------------------------------------------------------------------------------
+    #ファイルから取得したメイクスパン
+    get_data = []
+    
+    # ファイルを開く
+    tgff_file = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/new_change_tasknum_makespan/makespan_qlheft/makespan_100.txt", "r")
+    
+    # 1行ずつ読み込む
+    for line in tgff_file:
+        # 文字列の半角スペース・タブ区切りで区切ったリストを取得
+        line_list = line.split()
+        
+        get_data.append(float(line_list[0]))
+    
+    print('median_low_', end = '')
+    print('100 = ', end = '')
+    print(statistics.median_low(get_data))
+    print('median_high_', end = '')
+    print('100 = ', end = '')
+    print(statistics.median_high(get_data))
+    #↑-----QLHEFT_100------------------------------------------------------------------------------------------------------------------------
+    
+    #↓-----QLHEFT_200------------------------------------------------------------------------------------------------------------------------
+    #ファイルから取得したメイクスパン
+    get_data = []
+    
+    # ファイルを開く
+    tgff_file = open("C:/Users/atsushi/Documents/研究/論文投稿/卒論/tex/figure/R/new_change_tasknum_makespan/makespan_qlheft/makespan_200.txt", "r")
+    
+    # 1行ずつ読み込む
+    for line in tgff_file:
+        # 文字列の半角スペース・タブ区切りで区切ったリストを取得
+        line_list = line.split()
+        
+        get_data.append(float(line_list[0]))
+    
+    print('median_low_', end = '')
+    print('200 = ', end = '')
+    print(statistics.median_low(get_data))
+    print('median_high_', end = '')
+    print('200 = ', end = '')
+    print(statistics.median_high(get_data))
+    #↑-----QLHEFT_200------------------------------------------------------------------------------------------------------------------------
+
+#tasknum_median_qlheft()
+#CCR_median_qlheft()
+#tasknum_median_heft()
+#CCR_median_heft()
 calc_speedup()
 calc_efficiency()
