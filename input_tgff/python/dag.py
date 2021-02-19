@@ -1,10 +1,14 @@
 # tgffファイルを読み込んで、DAGを生成する。＜使用例＞NUM_OF_NODE, node, edge, pred, succ, exit = read_dag()
-def read_dag():
+def read_dag(name):
+
+	#↓-----実行するDAGのファイルパスを生成--------------------
+	dag_path = "../tgff/tgff_auto/random_dag/100/" + name + ".tgff"
+	#↑-----実行するDAGのファイルパスを生成--------------------
 
 	# ↓まずTYPEと実行時間の対応を取得----------------------------------------------------
 
 	# ファイルを開く
-	tgff_file = open("../tgff/new_100_60_4.tgff", "r")
+	tgff_file = open(dag_path, "r")
 
 
 	type_cost = [] #TYPEと実行時間の対応関係の配列
@@ -48,7 +52,7 @@ def read_dag():
 	# ↓TASKの情報を取得-----------------------------------------------------
 
 	# ファイルを開く
-	tgff_file = open("../tgff/new_100_60_4.tgff", "r")
+	tgff_file = open(dag_path, "r")
 
 
 	node = [] #各タスクの実行時間を格納
@@ -81,7 +85,7 @@ def read_dag():
 	# ↓ARCの情報を取得----------------------------------------------------------------
 
 	# ファイルを開く
-	tgff_file = open("../tgff/new_100_60_4.tgff", "r")
+	tgff_file = open(dag_path, "r")
 
 
 	edge = [[0 for j in range(num_of_node)] for i in range(num_of_node)] #edgeの配列はタスク数(len(node))×タスク数の2次元配列

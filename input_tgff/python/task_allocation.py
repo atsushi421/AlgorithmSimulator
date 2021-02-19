@@ -195,24 +195,29 @@ def culc_makespan(node, edge, pred, succ, s, k, ratio, sl):
 
     makespan = t
     #↓-----結果の出力-------------------------------
+    """
     print('result = ', end = '')
     for i in result:
         print(i)
-    print('makespan = ', end = '')
-    print(makespan)
+    """
+    #print('makespan = ', end = '')
+    #print(makespan)
+    
     sum = 0  #平均利用率の計算に用いる
-    print('利用率 = ')
+    #print('利用率 = ')
     for i in range(NUM_OF_CCs):
         for j in range(NUM_OF_CORES):
-            print('No.', end = '')
-            print(i, end = '')
-            print(', ', end = '')
-            print(j, end = '')
-            print(' = ', end = '')
-            print(target[i][j][2] / makespan * 100)
+            #print('No.', end = '')
+            #print(i, end = '')
+            #print(', ', end = '')
+            #print(j, end = '')
+            #print(' = ', end = '')
+            #print(target[i][j][2] / makespan * 100)
             sum += target[i][j][2] / makespan * 100
-    print('平均利用率 = ', end = '')
-    print(sum / (NUM_OF_CCs * NUM_OF_CORES))
+    #print('平均利用率 = ', end = '')
+    #print(sum / (NUM_OF_CCs * NUM_OF_CORES))
+
+    ave_use = sum / (NUM_OF_CCs * NUM_OF_CORES)
     #↑-----結果の出力-------------------------------
     
-    return result, makespan
+    return result, makespan, ave_use
