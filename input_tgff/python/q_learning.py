@@ -28,6 +28,21 @@ def ql(num_of_node, node, pred, succ, entry, exit, ranku, en, a, g, n):
 	# ↓このループが1エピソード-------------------------------------------------------------------------------------------------------------------------
 	for episode in range(n):
 	
+		wait_nodes = []  #次に実行可能なノードの集合
+		#エントリーノードは実行可能
+		for i in range(len(entry)):
+			if(entry[i] == 1):
+				wait_nodes.append(i)
+
+		#エントリーノードから、現在の状態をランダムに1つ選ぶ
+		selected_entry = random.choice(wait_nodes)
+
+		current_state = selected_entry  #現在の状態はエントリーノード
+		wait_nodes.remove(selected_entry)  #実行可能なノードから取り除く
+		executed_nodes = []  #現在までに実行済みのノードの集合
+		executed_nodes.append(selected_entry)  #エントリーノードは実行済みとする
+		
+		"""
 		# ↓初期設定------------------------------------------------------------------------------------------------------------------------
 		wait_nodes = []  #次に実行可能なノードの集合
 		#エントリーノードは実行可能
@@ -39,9 +54,10 @@ def ql(num_of_node, node, pred, succ, entry, exit, ranku, en, a, g, n):
 		current_state = en  #現在の状態はエントリーノード
 		executed_nodes = []  #現在までに実行済みのノードの集合
 		executed_nodes.append(en)  #エントリーノードは実行済みとする
+		"""
 
 		#↓-----エントリーノードの後続ノードのうち、legalなノードは実行可能--------------------------
-		for succ_n in succ[en]:
+		for succ_n in succ[selected_entry]:
 			legal_flag = 1  #DAGの依存関係を満たしているかどうか
 			for pred_n in pred[succ_n]:  #後続ノードの前任ノードをすべて見る
 				if(pred_n not in executed_nodes):  #後続ノードの前任ノードのうち、1つでも実行済みで無かったら
@@ -204,8 +220,10 @@ def ql(num_of_node, node, pred, succ, entry, exit, ranku, en, a, g, n):
 	# ↑-----------------------------------------------------------------------------------------------------------------
 
 	#↓-----結果の出力---------------
+	"""
 	print('sl = ', end = '')
 	print(s_list)
+	"""
 	#↑-----結果の出力---------------
 
 	return s_list

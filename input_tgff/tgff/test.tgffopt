@@ -1,20 +1,20 @@
 # 乱数生成の種
-seed 186
+seed 198
 
 # 生成するDAGの数
 tg_cnt 1
 
 # DAGの最小タスク数。 x y → xから+-yの範囲で変動する
-task_cnt 200 1
+task_cnt 50 1
 
 # ノードに入力されるエッジの最大数と出力するエッジの最大数を設定
-task_degree 2 4
+task_degree 5 3
 
 # グラフに複数の開始ノードがある確率を設定
-prob_multi_start_nodes 1.0
+#prob_multi_start_nodes 1.0
 
 # 複数の開始ノード（平均値、乗数）を持つグラフの開始ノード数を設定
-start_node 2 1
+start_node 1 1
 
 # new algorithmを使用
 #gen_series_parallel true
