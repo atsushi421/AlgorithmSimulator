@@ -38,10 +38,17 @@
 
 ## tgff_auto/
 - **random_generate.sh** : 旧アルゴリズムでDAGをランダムにたくさん生成
+  - 生成されたファイルはrandom_dag/に格納される
 - **new_random_generate.sh** : 新アルゴリズムでDAGをランダムにたくさん生成
+  - 生成されたファイルはnew_random_dag/に格納される
 - **test.tgffopt** : random_generate.shで参照するパラメータファイル
+  - 固定するパラメータを変更したい場合はこのファイルを修正する
 - **new.tgffopt** : new_random_generate.shで参照するパラメータファイル
+  - 固定するパラメータを変更したい場合はこのファイルを修正する
 - **change_option.py** : test.tgffoptのパラメータを変更する
+  - パラメータの変え方を変更したい場合はこのファイルを修正する
 - **new_change_option.py** : new.tgffoptのパラメータを変更する
+  - パラメータの変え方を変更したい場合はこのファイルを修正する
 - **change_dag_name.py** : 旧アルゴリズムで生成したDAGの名前を変更する
 - **new_change_dag_name.py** : 新アルゴリズムで生成したDAGの名前を変更する
+- **tgff3_1.exe** : TGFFの実行ファイル
