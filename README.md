@@ -35,3 +35,13 @@
 - **calc_efficiency.py** : メイクスパン結果からEfficiencyを計算し、resultに書き込む
   - 現状はコア数変化で計算
 - **order_name.py** : resultの結果をDAG名の昇順でソートする
+
+## tgff_auto/
+- **random_generate.sh** : 旧アルゴリズムでDAGをランダムにたくさん生成
+- **new_random_generate.sh** : 新アルゴリズムでDAGをランダムにたくさん生成
+- **test.tgffopt** : random_generate.shで参照するパラメータファイル
+- **new.tgffopt** : new_random_generate.shで参照するパラメータファイル
+- **change_option.py** : test.tgffoptのパラメータを変更する
+- **new_change_option.py** : new.tgffoptのパラメータを変更する
+- **change_dag_name.py** : 旧アルゴリズムで生成したDAGの名前を変更する
+- **new_change_dag_name.py** : 新アルゴリズムで生成したDAGの名前を変更する
